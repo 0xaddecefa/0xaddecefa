@@ -11,8 +11,8 @@
 
 #define DYNAMIC_CAST(obj,class) ([(obj) isKindOfClass:(Class)objc_getClass(#class)] ? (class *)obj : NULL)
 
-
 #define BASE_URL (@"https://api.themoviedb.org/3")
+#define API_KEY (@"b76b17706ed5076b03c2bd4783f578d4")
 
 #define REQUEST_LIMIT (30)
 #define REQUEST_TIMEFRAME (10)

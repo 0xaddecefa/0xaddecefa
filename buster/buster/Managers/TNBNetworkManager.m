@@ -38,6 +38,7 @@
 }
 
 - (instancetype)init {
+
 	self = [super initWithBaseURL: [NSURL URLWithString: BASE_URL]];
 
 	if (self) {
@@ -62,7 +63,7 @@
 
 			if (self.incomingBuffer.count > 0) {
 				NSDate *timeFrame = [self dateOfRequestWindow];
-				if ([timeFrame timeIntervalSinceNow] < -REQUEST_TIMEFRAME) {
+				if (!timeFrame || [timeFrame timeIntervalSinceNow] < -REQUEST_TIMEFRAME) {
 					TNBNetworkRequest *request = DYNAMIC_CAST(self.incomingBuffer.firstObject, TNBNetworkRequest);
 					[self.incomingBuffer removeObjectAtIndex:0];
 					if (request) {
@@ -115,7 +116,9 @@
 - (TNBNetworkRequest *)getConfigurationWithCompletion: (CompletionBlock)complete {
 	NSString *urlString = @"configuration";
 	TNBNetworkRequest *request = [[TNBNetworkRequest alloc] initWithURLString: urlString
-																   parameters: nil
+																   parameters:  @{
+																				  @"api_key" : API_KEY
+																				  }
 																	  success: complete
 																	  failure: nil];
 

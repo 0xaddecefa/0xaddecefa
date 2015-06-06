@@ -9,7 +9,7 @@
 #import "TNBNetworkRequest.h"
 
 @interface TNBNetworkRequest()
-@property (nonatomic, strong, readwrite) NSString* URL;
+@property (nonatomic, strong, readwrite) NSString* URLString;
 @property (nonatomic, strong, readwrite) id parameters;
 
 @property (nonatomic, copy, readwrite) CompletionBlock complete;
@@ -25,7 +25,7 @@
 						  failure: (FailureBlock)fail {
 	self = [self init];
 	if (self) {
-		self.URL = URL;
+		self.URLString = URL;
 		self.parameters = parameters;
 		self.complete = complete;
 		self.fail = fail;

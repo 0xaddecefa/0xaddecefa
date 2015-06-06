@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "TNBNetworkManager.h"
 @interface AppDelegate ()
 
 @end
@@ -18,7 +18,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	
-
+	[[TNBNetworkManager sharedInstance] getConfigurationWithCompletion:^(TNBNetworkRequest *operation, id responseObject) {
+		int i = 0;
+	}];
 	return YES;
 }
 //
