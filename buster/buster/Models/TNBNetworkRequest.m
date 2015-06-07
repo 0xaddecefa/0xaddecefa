@@ -15,6 +15,8 @@
 @property (nonatomic, copy, readwrite) CompletionBlock complete;
 @property (nonatomic, copy, readwrite) FailureBlock fail;
 
+
+
 @end
 
 @implementation TNBNetworkRequest
@@ -29,6 +31,9 @@
 		self.parameters = parameters;
 		self.complete = complete;
 		self.fail = fail;
+
+		// by default the response should arrive to the same thread the request was made
+		self.callbackThread = [NSThread currentThread];
 	}
 
 	return self;

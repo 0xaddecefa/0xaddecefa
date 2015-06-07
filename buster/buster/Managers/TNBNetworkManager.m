@@ -45,8 +45,8 @@
 
 		self.incomingBuffer = [NSMutableArray array];
 		self.requestDateBuffer = [NSMutableArray array];
-
 		self.workerThread = [[NSThread alloc] initWithTarget:self selector:@selector(workerLoop) object:nil];
+		self.workerThread.name = @"Network Manager thread";
 		[self.workerThread start];
 	}
 
@@ -58,6 +58,7 @@
 
 	self.running = YES;
 
+	self.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	while (self.running) {
 		@autoreleasepool {
 
@@ -92,11 +93,27 @@
 
 	[self GET:request.URLString parameters:request.parameters success:^(NSURLSessionDataTask *operation, id responseObject) {
 		if (request.complete) {
-			request.complete(request, responseObject);
+			if (request.callbackThread) {
+				[self performBlock:^{
+					request.complete(request, responseObject);
+				} onThread:request.callbackThread];
+			} else {
+				[self performBlockOnMainThread:^{
+					request.complete(request, responseObject);
+				}];
+			}
 		}
 	} failure:^(NSURLSessionDataTask *operation, NSError *error) {
 		if (request.fail) {
-			request.fail(request, error);
+			if (request.callbackThread) {
+				[self performBlock:^{
+					request.fail(request, error);
+				} onThread:request.callbackThread];
+			} else {
+				[self performBlockOnMainThread:^{
+					request.fail(request, error);
+				}];
+			}
 		}
 
 	}];
@@ -147,7 +164,7 @@
 	TNBNetworkRequest *request = [[TNBNetworkRequest alloc] initWithURLString: urlString
 																   parameters: parameters
 																	  success: complete
-																	  failure: nil];
+																	  failure: fail];
 	if (request) {
 		[self.incomingBuffer addObject:request];
 	}
@@ -167,7 +184,7 @@
 	TNBNetworkRequest *request = [[TNBNetworkRequest alloc] initWithURLString: urlString
 																   parameters: parameters
 																	  success: complete
-																	  failure: nil];
+																	  failure: fail];
 	if (request) {
 		[self.incomingBuffer addObject:request];
 	}

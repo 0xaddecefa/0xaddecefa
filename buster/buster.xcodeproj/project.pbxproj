@@ -14,6 +14,9 @@
 		CCF329131B235E8300D80A17 /* TNBNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329121B235E8300D80A17 /* TNBNetworkManager.m */; };
 		CCF329161B2360CB00D80A17 /* TNBNetworkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329151B2360CB00D80A17 /* TNBNetworkRequest.m */; };
 		CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329191B23BEAA00D80A17 /* TNBMainViewController.m */; };
+		CCF329201B23C67F00D80A17 /* TNBBaseMovieItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3291F1B23C67F00D80A17 /* TNBBaseMovieItem.m */; };
+		CCF329231B23C6D900D80A17 /* TNBSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329221B23C6D900D80A17 /* TNBSearchModel.m */; };
+		CCF329271B23CD1700D80A17 /* NSObject+Multithreading.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329261B23CD1700D80A17 /* NSObject+Multithreading.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,12 @@
 		CCF329171B23AA5F00D80A17 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		CCF329181B23BEAA00D80A17 /* TNBMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBMainViewController.h; sourceTree = "<group>"; };
 		CCF329191B23BEAA00D80A17 /* TNBMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBMainViewController.m; sourceTree = "<group>"; };
+		CCF3291E1B23C67F00D80A17 /* TNBBaseMovieItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBBaseMovieItem.h; sourceTree = "<group>"; };
+		CCF3291F1B23C67F00D80A17 /* TNBBaseMovieItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBBaseMovieItem.m; sourceTree = "<group>"; };
+		CCF329211B23C6D900D80A17 /* TNBSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBSearchModel.h; sourceTree = "<group>"; };
+		CCF329221B23C6D900D80A17 /* TNBSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBSearchModel.m; sourceTree = "<group>"; };
+		CCF329251B23CD1700D80A17 /* NSObject+Multithreading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Multithreading.h"; sourceTree = "<group>"; };
+		CCF329261B23CD1700D80A17 /* NSObject+Multithreading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Multithreading.m"; sourceTree = "<group>"; };
 		D8557DECF47476B4FE4C3FC2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +94,7 @@
 		CCF328E01B2231F900D80A17 /* buster */ = {
 			isa = PBXGroup;
 			children = (
+				CCF329241B23CD1700D80A17 /* Extensions */,
 				CCF329101B235C4300D80A17 /* Managers */,
 				CCF3290D1B22329500D80A17 /* Models */,
 				CCF3290E1B22329500D80A17 /* Views */,
@@ -112,6 +122,10 @@
 			children = (
 				CCF329141B2360CB00D80A17 /* TNBNetworkRequest.h */,
 				CCF329151B2360CB00D80A17 /* TNBNetworkRequest.m */,
+				CCF3291E1B23C67F00D80A17 /* TNBBaseMovieItem.h */,
+				CCF3291F1B23C67F00D80A17 /* TNBBaseMovieItem.m */,
+				CCF329211B23C6D900D80A17 /* TNBSearchModel.h */,
+				CCF329221B23C6D900D80A17 /* TNBSearchModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -139,6 +153,15 @@
 				CCF329121B235E8300D80A17 /* TNBNetworkManager.m */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		CCF329241B23CD1700D80A17 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CCF329251B23CD1700D80A17 /* NSObject+Multithreading.h */,
+				CCF329261B23CD1700D80A17 /* NSObject+Multithreading.m */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,9 +268,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCF329271B23CD1700D80A17 /* NSObject+Multithreading.m in Sources */,
 				CCF328E71B2231F900D80A17 /* AppDelegate.m in Sources */,
 				CCF329161B2360CB00D80A17 /* TNBNetworkRequest.m in Sources */,
 				CCF329131B235E8300D80A17 /* TNBNetworkManager.m in Sources */,
+				CCF329231B23C6D900D80A17 /* TNBSearchModel.m in Sources */,
+				CCF329201B23C67F00D80A17 /* TNBBaseMovieItem.m in Sources */,
 				CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */,
 				CCF328E41B2231F900D80A17 /* main.m in Sources */,
 			);

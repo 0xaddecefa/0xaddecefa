@@ -9,6 +9,9 @@
 #ifndef buster_PrefixHeader_pch
 #define buster_PrefixHeader_pch
 
+#import "NSObject+Multithreading.h"
+
+
 #define DYNAMIC_CAST(obj,class) ([(obj) isKindOfClass:(Class)objc_getClass(#class)] ? (class *)obj : NULL)
 
 #define BASE_URL (@"https://api.themoviedb.org/3")

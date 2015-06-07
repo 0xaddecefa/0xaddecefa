@@ -27,4 +27,6 @@ typedef void (^FailureBlock)(TNBNetworkRequest *operation, NSError *error);
 @property (nonatomic, copy, readonly) FailureBlock fail;
 
 
+@property (nonatomic, strong) NSThread *callbackThread;
+
 @end
