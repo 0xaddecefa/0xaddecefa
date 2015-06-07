@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "TNBNetworkManager.h"
+#import "TNBMainViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -16,7 +18,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	TNBMainViewController *mainViewController = [[TNBMainViewController alloc] initWithNibName:nil bundle:nil];
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+	self.window.rootViewController = navController;
+	[self.window makeKeyAndVisible];
 
 	[[TNBNetworkManager sharedInstance] getConfigurationWithCompletion:^(TNBNetworkRequest *operation, id responseObject) {
 	}];

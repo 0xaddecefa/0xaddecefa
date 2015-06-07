@@ -13,6 +13,7 @@
 		CCF328EF1B2231F900D80A17 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF328EE1B2231F900D80A17 /* Images.xcassets */; };
 		CCF329131B235E8300D80A17 /* TNBNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329121B235E8300D80A17 /* TNBNetworkManager.m */; };
 		CCF329161B2360CB00D80A17 /* TNBNetworkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329151B2360CB00D80A17 /* TNBNetworkRequest.m */; };
+		CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329191B23BEAA00D80A17 /* TNBMainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		CCF329141B2360CB00D80A17 /* TNBNetworkRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBNetworkRequest.h; sourceTree = "<group>"; };
 		CCF329151B2360CB00D80A17 /* TNBNetworkRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBNetworkRequest.m; sourceTree = "<group>"; };
 		CCF329171B23AA5F00D80A17 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		CCF329181B23BEAA00D80A17 /* TNBMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBMainViewController.h; sourceTree = "<group>"; };
+		CCF329191B23BEAA00D80A17 /* TNBMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBMainViewController.m; sourceTree = "<group>"; };
 		D8557DECF47476B4FE4C3FC2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +126,8 @@
 		CCF3290F1B22329500D80A17 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CCF329181B23BEAA00D80A17 /* TNBMainViewController.h */,
+				CCF329191B23BEAA00D80A17 /* TNBMainViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				CCF328E71B2231F900D80A17 /* AppDelegate.m in Sources */,
 				CCF329161B2360CB00D80A17 /* TNBNetworkRequest.m in Sources */,
 				CCF329131B235E8300D80A17 /* TNBNetworkManager.m in Sources */,
+				CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */,
 				CCF328E41B2231F900D80A17 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
