@@ -47,7 +47,7 @@
 }
 
 - (void)loadCurrentPage {
-	self.currentState = EModelStateLoading;
+	self.currentState = self.currentPage > 1 ? EModelStateLoadingMore : EModelStateLoading;
 
 	[[TNBNetworkManager sharedInstance] search: self.query
 										  page: self.currentPage

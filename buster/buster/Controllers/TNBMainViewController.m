@@ -23,6 +23,14 @@
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UICollectionView *collectionView;
+
+@property (nonatomic, strong) UIView *stateViewContainerView;
+@property (nonatomic, strong) UIView *initialView;
+@property (nonatomic, strong) UIView *loadingView;
+@property (nonatomic, strong) UIView *errorView;
+
+@property (nonatomic, assign) BOOL searchBarBecameFirstResponder;
+
 @end
 
 @implementation TNBMainViewController
@@ -32,11 +40,6 @@
 
 	self.searchModel = [[TNBSearchModel alloc] init];
 
-	[self.searchModel addObserver: self
-					   forKeyPath: @"currentState"
-						  options: NSKeyValueObservingOptionNew
-						  context: nil];
-
 	[[NSNotificationCenter defaultCenter] addObserver: self
 											 selector: @selector(keyboardFrameChanged:)
 												 name: UIKeyboardWillChangeFrameNotification
@@ -45,10 +48,19 @@
 	[self.view addSubview:self.containerView];
 	[self.containerView addSubview:self.collectionView];
 
+	[self.containerView insertSubview:self.stateViewContainerView aboveSubview:self.collectionView];
+
 	self.navigationItem.titleView = self.searchBar;
 
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if (!self.searchBarBecameFirstResponder) {
+		[self.searchBar becomeFirstResponder];
+		self.searchBarBecameFirstResponder = YES;
+	}
+}
 
 - (void)dealloc {
 	[self.searchModel removeObserver:self forKeyPath:@"currentState"];
@@ -91,6 +103,79 @@
 	return _collectionView;
 }
 
+- (UIView *)stateViewContainerView {
+	if (!_stateViewContainerView) {
+		_stateViewContainerView = [[UIView alloc] initWithFrame:self.view.bounds];
+		_stateViewContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_stateViewContainerView.hidden = YES;
+	}
+	return _stateViewContainerView;
+}
+
+- (UIView *)loadingView {
+	if (!_loadingView) {
+		_loadingView = [[UIView alloc] initWithFrame:self.stateViewContainerView.bounds];
+		UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		activityIndicator.color = [UIColor magentaColor];
+		activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+		[activityIndicator startAnimating];
+		[_loadingView addSubview:activityIndicator];
+		activityIndicator.center = _loadingView.center;
+	}
+	return _loadingView;
+}
+
+
+
+- (UIView *)errorView {
+	if (!_errorView) {
+		_errorView = [[UIView alloc] initWithFrame:self.stateViewContainerView.bounds];
+		_errorView.backgroundColor = [UIColor redColor];
+		_errorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		UILabel *label = [[UILabel alloc] initWithFrame:_errorView.bounds];
+		label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		label.textAlignment = NSTextAlignmentCenter;
+
+		label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"error_message", @"Error happened")
+															   attributes: @{
+																			 NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
+																			 NSForegroundColorAttributeName : [UIColor whiteColor],}];
+		[_errorView addSubview:label];
+	}
+	return _errorView;
+}
+
+- (UIView *)initialView {
+	if (!_initialView) {
+		_initialView = [[UIView alloc] initWithFrame:self.stateViewContainerView.bounds];
+		_initialView.backgroundColor = [UIColor whiteColor];
+		_initialView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		UILabel *label = [[UILabel alloc] initWithFrame:_initialView.bounds];
+		label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		label.textAlignment = NSTextAlignmentCenter;
+
+		label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"initial_message", @"Call to action msg")
+															   attributes: @{
+																			 NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
+																			 NSForegroundColorAttributeName : [UIColor blackColor],}];
+		[_initialView addSubview:label];
+	}
+	return _initialView;
+}
+
+#pragma mark - custom setters
+- (void)setSearchModel:(TNBSearchModel *)searchModel {
+	if (searchModel != _searchModel) {
+		[_searchModel removeObserver:self forKeyPath:@"currentState"];
+		_searchModel = searchModel;
+
+		[_searchModel addObserver: self
+					   forKeyPath: @"currentState"
+						  options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+						  context: nil];
+
+	}
+}
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -109,7 +194,10 @@
 
 	TNBSearchCollectionViewCell *myCell = DYNAMIC_CAST(cell, TNBSearchCollectionViewCell);
 
-	TNBBaseMovieItem *movieItem = DYNAMIC_CAST(self.searchModel.movies[indexPath.row], TNBBaseMovieItem);
+	TNBBaseMovieItem *movieItem = nil;
+	if (self.searchModel.movies.count > indexPath.row) {
+		movieItem = DYNAMIC_CAST(self.searchModel.movies[indexPath.row], TNBBaseMovieItem);
+	}
 
 	[myCell setImageResourceName: movieItem.posterPath
 						andTitle: movieItem.title];
@@ -168,6 +256,9 @@
 						change:(NSDictionary *)change
 					   context:(void *)context {
 	if ([keyPath isEqualToString:@"currentState"]) {
+
+		[self showState:self.searchModel.currentState];
+
 		if (self.searchModel.currentState == EModelStateHasContent ||
 			self.searchModel.currentState == EModelStateHasAllContent) {
 			[self.collectionView reloadData];
@@ -193,6 +284,43 @@
 	}];
 
 }
+
+
+#pragma mark - state view handling
+- (void)showState:(EModelState)currentState {
+
+	[self.stateViewContainerView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+
+	UIView *stateView = [self stateViewForState:currentState];
+	if (stateView) {
+		stateView.frame = self.stateViewContainerView.bounds;
+		stateView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+		[self.stateViewContainerView addSubview:stateView];
+		self.stateViewContainerView.hidden = NO;
+	} else {
+		self.stateViewContainerView.hidden = YES;
+	}
+}
+
+- (UIView *)stateViewSuperview {
+	return self.view;
+}
+
+- (UIView *)stateViewForState:(EModelState)state {
+
+	switch (state) {
+		case EModelStateInitial:
+			return self.initialView;
+		case EModelStateLoading:
+			return self.loadingView;
+		case EModelStateError:
+			return self.errorView;
+		default:
+			return nil;
+	}
+}
+
 
 
 @end

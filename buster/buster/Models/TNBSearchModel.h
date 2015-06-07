@@ -11,7 +11,7 @@
 typedef NS_ENUM(NSInteger, EModelState) {
 	EModelStateInitial,
 	EModelStateLoading,
-	EModelStateReloading,
+	EModelStateLoadingMore,
 	EModelStateHasContent,
 	EModelStateHasAllContent,
 	EModelStateEmpty,
