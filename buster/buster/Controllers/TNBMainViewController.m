@@ -32,12 +32,22 @@
 
 	self.searchModel = [[TNBSearchModel alloc] init];
 
-	[self.searchModel addObserver:self forKeyPath:@"currentState" options:NSKeyValueObservingOptionNew context:nil];
+	[self.searchModel addObserver: self
+					   forKeyPath: @"currentState"
+						  options: NSKeyValueObservingOptionNew
+						  context: nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver: self
+											 selector: @selector(keyboardFrameChanged:)
+												 name: UIKeyboardWillChangeFrameNotification
+											   object: nil];
 
 	[self.view addSubview:self.containerView];
 	[self.containerView addSubview:self.collectionView];
 
 	self.navigationItem.titleView = self.searchBar;
+
+
 }
 
 
@@ -131,4 +141,25 @@
 		}
 	}
 }
+
+
+#pragma mark - keyboard 
+
+- (void)keyboardFrameChanged:(NSNotification *) notification {
+	NSDictionary *userinfo = notification.userInfo;
+	CGRect endFrame;
+	[[userinfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&endFrame];
+	endFrame = [self.view convertRect:endFrame fromView:nil];
+	NSNumber *durationValue = DYNAMIC_CAST(userinfo[UIKeyboardAnimationDurationUserInfoKey], NSNumber);
+	CGFloat animationDuration = [durationValue floatValue];
+
+	[UIView animateWithDuration:animationDuration animations:^{
+		CGRect frame = self.containerView.frame;
+		frame.size.height = endFrame.origin.y;
+		self.containerView.frame = frame;
+	}];
+
+}
+
+
 @end
