@@ -17,6 +17,7 @@
 - (TNBNetworkRequest *)getConfigurationWithCompletion: (CompletionBlock)complete;
 
 - (TNBNetworkRequest *)search: (NSString *)query
+						 page: (NSUInteger)page
 					 complete: (CompletionBlock)complete
 						 fail: (FailureBlock)fail;
 

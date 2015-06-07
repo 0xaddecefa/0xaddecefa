@@ -115,10 +115,12 @@
 
 - (TNBNetworkRequest *)getConfigurationWithCompletion: (CompletionBlock)complete {
 	NSString *urlString = @"configuration";
+	NSDictionary *parameters =  @{
+								  @"api_key" : API_KEY,
+								  };
+
 	TNBNetworkRequest *request = [[TNBNetworkRequest alloc] initWithURLString: urlString
-																   parameters:  @{
-																				  @"api_key" : API_KEY
-																				  }
+																   parameters: parameters
 																	  success: complete
 																	  failure: nil];
 
@@ -130,12 +132,20 @@
 }
 
 - (TNBNetworkRequest *)search: (NSString *)query
+						 page: (NSUInteger)page
 					 complete: (CompletionBlock)complete
 						 fail: (FailureBlock)fail {
 	NSString *urlString = @"search/movie";
+	NSString *encodedQuery = [query stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+	NSDictionary *parameters =  @{
+								  @"api_key" : API_KEY,
+								  @"page" : @(page),
+								  @"query" : encodedQuery,
+								  @"search_type" : @"ngram",
+								  };
 
 	TNBNetworkRequest *request = [[TNBNetworkRequest alloc] initWithURLString: urlString
-																   parameters: nil
+																   parameters: parameters
 																	  success: complete
 																	  failure: nil];
 	if (request) {
@@ -150,8 +160,12 @@
 								  fail: (FailureBlock)fail {
 
 	NSString *urlString = [NSString stringWithFormat:@"movie/%@",@(movieID)];
+	NSDictionary *parameters =  @{
+								  @"api_key" : API_KEY,
+								  };
+
 	TNBNetworkRequest *request = [[TNBNetworkRequest alloc] initWithURLString: urlString
-																   parameters: nil
+																   parameters: parameters
 																	  success: complete
 																	  failure: nil];
 	if (request) {

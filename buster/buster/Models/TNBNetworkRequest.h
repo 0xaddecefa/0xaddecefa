@@ -11,7 +11,7 @@
 @class TNBNetworkRequest;
 
 typedef void (^CompletionBlock)(TNBNetworkRequest *operation, id responseObject);
-typedef void (^FailureBlock)(TNBNetworkRequest*, NSError*);
+typedef void (^FailureBlock)(TNBNetworkRequest *operation, NSError *error);
 
 @interface TNBNetworkRequest : NSObject
 
