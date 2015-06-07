@@ -25,4 +25,6 @@
 							  complete: (CompletionBlock)complete
 								  fail: (FailureBlock)fail;
 
+
+- (void)cancelRequest:(TNBNetworkRequest *)request;
 @end

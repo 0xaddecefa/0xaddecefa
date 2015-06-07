@@ -21,6 +21,11 @@ typedef NS_ENUM(NSInteger, EModelState) {
 
 @interface TNBSearchModel : NSObject
 
+@property (nonatomic, strong, readonly) NSMutableArray *movies;
+
+@property (nonatomic, assign, readonly) EModelState currentState;
+
+
 - (void)setQuery: (NSString *)query;
 - (void)loadNextPage;
 

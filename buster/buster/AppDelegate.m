@@ -24,15 +24,6 @@
 	self.window.rootViewController = navController;
 	[self.window makeKeyAndVisible];
 
-	[[TNBNetworkManager sharedInstance] getConfigurationWithCompletion:^(TNBNetworkRequest *operation, id responseObject) {
-	}];
-
-	[[TNBNetworkManager sharedInstance] search:@"the b" page:1 complete:^(TNBNetworkRequest *operation, id responseObject) {
-		int i = 0;
-	} fail:^(TNBNetworkRequest *request, NSError *error) {
-		int i = 0;
-	}];
-
 	return YES;
 }
 

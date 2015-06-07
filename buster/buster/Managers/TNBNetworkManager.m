@@ -148,6 +148,10 @@
 
 }
 
+- (void)cancelRequest:(TNBNetworkRequest *)request {
+	
+}
+
 - (TNBNetworkRequest *)search: (NSString *)query
 						 page: (NSUInteger)page
 					 complete: (CompletionBlock)complete
