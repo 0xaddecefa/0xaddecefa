@@ -9,6 +9,7 @@
 #ifndef buster_PrefixHeader_pch
 #define buster_PrefixHeader_pch
 
+#include <objc/runtime.h>
 #import "NSObject+Multithreading.h"
 
 

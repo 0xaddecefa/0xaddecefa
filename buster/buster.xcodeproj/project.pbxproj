@@ -18,6 +18,8 @@
 		CCF329231B23C6D900D80A17 /* TNBSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329221B23C6D900D80A17 /* TNBSearchModel.m */; };
 		CCF329271B23CD1700D80A17 /* NSObject+Multithreading.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329261B23CD1700D80A17 /* NSObject+Multithreading.m */; };
 		CCF3292A1B23DAD700D80A17 /* TNBSearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329291B23DAD700D80A17 /* TNBSearchCollectionViewCell.m */; };
+		CCF3292D1B24A92900D80A17 /* TNBImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3292C1B24A92900D80A17 /* TNBImageManager.m */; };
+		CCF329301B24B0CF00D80A17 /* TNBImageConfigurationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3292F1B24B0CF00D80A17 /* TNBImageConfigurationModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,10 @@
 		CCF329261B23CD1700D80A17 /* NSObject+Multithreading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Multithreading.m"; sourceTree = "<group>"; };
 		CCF329281B23DAD700D80A17 /* TNBSearchCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBSearchCollectionViewCell.h; sourceTree = "<group>"; };
 		CCF329291B23DAD700D80A17 /* TNBSearchCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBSearchCollectionViewCell.m; sourceTree = "<group>"; };
+		CCF3292B1B24A92900D80A17 /* TNBImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBImageManager.h; sourceTree = "<group>"; };
+		CCF3292C1B24A92900D80A17 /* TNBImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBImageManager.m; sourceTree = "<group>"; };
+		CCF3292E1B24B0CF00D80A17 /* TNBImageConfigurationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBImageConfigurationModel.h; sourceTree = "<group>"; };
+		CCF3292F1B24B0CF00D80A17 /* TNBImageConfigurationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBImageConfigurationModel.m; sourceTree = "<group>"; };
 		D8557DECF47476B4FE4C3FC2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,6 +135,8 @@
 				CCF3291F1B23C67F00D80A17 /* TNBBaseMovieItem.m */,
 				CCF329211B23C6D900D80A17 /* TNBSearchModel.h */,
 				CCF329221B23C6D900D80A17 /* TNBSearchModel.m */,
+				CCF3292E1B24B0CF00D80A17 /* TNBImageConfigurationModel.h */,
+				CCF3292F1B24B0CF00D80A17 /* TNBImageConfigurationModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -156,6 +164,8 @@
 			children = (
 				CCF329111B235E8300D80A17 /* TNBNetworkManager.h */,
 				CCF329121B235E8300D80A17 /* TNBNetworkManager.m */,
+				CCF3292B1B24A92900D80A17 /* TNBImageManager.h */,
+				CCF3292C1B24A92900D80A17 /* TNBImageManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -273,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCF3292D1B24A92900D80A17 /* TNBImageManager.m in Sources */,
 				CCF329271B23CD1700D80A17 /* NSObject+Multithreading.m in Sources */,
 				CCF328E71B2231F900D80A17 /* AppDelegate.m in Sources */,
 				CCF329161B2360CB00D80A17 /* TNBNetworkRequest.m in Sources */,
@@ -280,6 +291,7 @@
 				CCF329131B235E8300D80A17 /* TNBNetworkManager.m in Sources */,
 				CCF329231B23C6D900D80A17 /* TNBSearchModel.m in Sources */,
 				CCF329201B23C67F00D80A17 /* TNBBaseMovieItem.m in Sources */,
+				CCF329301B24B0CF00D80A17 /* TNBImageConfigurationModel.m in Sources */,
 				CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */,
 				CCF328E41B2231F900D80A17 /* main.m in Sources */,
 			);

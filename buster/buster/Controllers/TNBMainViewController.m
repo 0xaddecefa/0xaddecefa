@@ -9,6 +9,8 @@
 #import "TNBMainViewController.h"
 #import "TNBSearchCollectionViewCell.h"
 #import "TNBSearchModel.h"
+#import "TNBBaseMovieItem.h"
+
 
 #import "FMMosaicLayout.h"
 
@@ -92,6 +94,17 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:REUSE_IDENTIFIER	forIndexPath:indexPath];
+
+	TNBSearchCollectionViewCell *myCell = DYNAMIC_CAST(cell, TNBSearchCollectionViewCell);
+
+	TNBBaseMovieItem *movieItem = DYNAMIC_CAST(self.searchModel.movies[indexPath.row], TNBBaseMovieItem);
+
+	[myCell setImageResourceName: movieItem.posterPath
+						andTitle: movieItem.title];
+
+	myCell.defaultActionCallback = ^() {
+
+	};
 
 	return cell;
 }

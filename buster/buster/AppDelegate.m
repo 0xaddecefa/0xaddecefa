@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "TNBNetworkManager.h"
+#import "TNBImageManager.h"
 #import "TNBMainViewController.h"
 
 @interface AppDelegate ()
@@ -18,6 +18,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	[TNBImageManager sharedInstance];
+
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	TNBMainViewController *mainViewController = [[TNBMainViewController alloc] initWithNibName:nil bundle:nil];
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
@@ -25,6 +28,10 @@
 	[self.window makeKeyAndVisible];
 
 	return YES;
+}
+
+-(void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+	[[TNBImageManager sharedInstance] clearMemoryCache];
 }
 
 @end

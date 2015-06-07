@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ActionCallback)(void);
+
 @interface TNBSearchCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, copy) ActionCallback defaultActionCallback;
+@property (nonatomic, copy) ActionCallback secondaryActionCallback;
+
 - (id)initWithFrame:(CGRect)frame;
+- (void)setImageResourceName: (NSString *)resourceName
+					andTitle: (NSString *)title;
+
+
 
 @end
