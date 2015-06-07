@@ -25,7 +25,6 @@ typedef NS_ENUM(NSInteger, EModelState) {
 
 @property (nonatomic, assign, readonly) EModelState currentState;
 
-
 - (void)setQuery: (NSString *)query;
 - (void)loadNextPage;
 

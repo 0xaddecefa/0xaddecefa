@@ -47,7 +47,6 @@
 
 	self.navigationItem.titleView = self.searchBar;
 
-
 }
 
 
@@ -61,7 +60,7 @@
 	if (!_containerView) {
 		_containerView = [[UIView alloc] initWithFrame:self.view.bounds];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		_containerView.backgroundColor = [UIColor redColor];
+		_containerView.backgroundColor = [UIColor whiteColor];
 	}
 
 	return _containerView;
@@ -80,6 +79,7 @@
 	if (!_collectionView) {
 		FMMosaicLayout *layout = [[FMMosaicLayout alloc] init];
 		_collectionView = [[UICollectionView alloc] initWithFrame:self.containerView.bounds collectionViewLayout:layout];
+		_collectionView.backgroundColor = [UIColor clearColor];
 		_collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[_collectionView registerClass:[TNBSearchCollectionViewCell class] forCellWithReuseIdentifier:REUSE_IDENTIFIER];
 
@@ -94,6 +94,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	[self.searchModel setQuery:searchBar.text];
+	[self.searchBar resignFirstResponder];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -122,10 +123,33 @@
 
 
 #pragma mark - UICollectionViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (scrollView == self.collectionView) {
+		CGFloat scrollContentYOffset = self.collectionView.contentOffset.y;
+		CGFloat scrollContentHeight = self.collectionView.contentSize.height;
+		CGFloat scrollViewHeight = self.collectionView.bounds.size.height;
+
+		CGFloat scrollDistanceFromBottom = scrollContentHeight - scrollViewHeight - scrollContentYOffset;
+		if (scrollDistanceFromBottom < 300.f && self.searchModel.currentState == EModelStateHasContent) {
+			[self.searchModel loadNextPage];
+		}
+	}
+}
+
 
 #pragma mark - FMMosaicLayoutDelegate
-- (FMMosaicCellSize)collectionView:(UICollectionView *)collectionView layout:(FMMosaicLayout *)collectionViewLayout mosaicCellSizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return (indexPath.row == 0 && indexPath.section == 0) || rand() % 20 < 1;
+
+- (NSInteger)collectionView: (UICollectionView *)collectionView
+					 layout: (FMMosaicLayout *)collectionViewLayout
+   numberOfColumnsInSection: (NSInteger)section {
+	return 2;
+}
+
+
+- (FMMosaicCellSize)collectionView: (UICollectionView *)collectionView
+							layout: (FMMosaicLayout *)collectionViewLayout
+  mosaicCellSizeForItemAtIndexPath: (NSIndexPath *)indexPath {
+	return indexPath.row % 3 == 0 ? FMMosaicCellSizeBig : FMMosaicCellSizeSmall;
 }
 
 

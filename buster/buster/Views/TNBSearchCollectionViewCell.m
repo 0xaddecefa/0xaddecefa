@@ -70,6 +70,7 @@
 	self.backgroundColor = [UIColor randomColor];
 	self.backgroundImageView.image = nil;
 	self.titleLabel.attributedText = nil;
+	[self.backgroundImageView sd_cancelCurrentImageLoad];
 }
 
 - (void)layoutSubviews {
