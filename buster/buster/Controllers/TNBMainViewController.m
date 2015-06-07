@@ -81,6 +81,7 @@
 		_collectionView = [[UICollectionView alloc] initWithFrame:self.containerView.bounds collectionViewLayout:layout];
 		_collectionView.backgroundColor = [UIColor clearColor];
 		_collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_collectionView.alwaysBounceVertical = YES;
 		[_collectionView registerClass:[TNBSearchCollectionViewCell class] forCellWithReuseIdentifier:REUSE_IDENTIFIER];
 
 		_collectionView.dataSource = self;
@@ -133,6 +134,11 @@
 		if (scrollDistanceFromBottom < 300.f && self.searchModel.currentState == EModelStateHasContent) {
 			[self.searchModel loadNextPage];
 		}
+
+		for (id obj in self.collectionView.visibleCells) {
+			TNBSearchCollectionViewCell *cell = DYNAMIC_CAST(obj, TNBSearchCollectionViewCell);
+			[cell showContent];
+		}
 	}
 }
 
@@ -142,13 +148,16 @@
 - (NSInteger)collectionView: (UICollectionView *)collectionView
 					 layout: (FMMosaicLayout *)collectionViewLayout
    numberOfColumnsInSection: (NSInteger)section {
-	return 2;
+	return 2;IS_DEVICE_IPAD ? IS_DEVICE_ORIENTATION_LANDSCAPE ? 4 : 3 : 2;
 }
 
 
 - (FMMosaicCellSize)collectionView: (UICollectionView *)collectionView
 							layout: (FMMosaicLayout *)collectionViewLayout
   mosaicCellSizeForItemAtIndexPath: (NSIndexPath *)indexPath {
+
+
+
 	return indexPath.row % 3 == 0 ? FMMosaicCellSizeBig : FMMosaicCellSizeSmall;
 }
 

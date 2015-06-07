@@ -19,6 +19,6 @@ typedef void(^ActionCallback)(void);
 - (void)setImageResourceName: (NSString *)resourceName
 					andTitle: (NSString *)title;
 
-
+- (void)showContent;
 
 @end

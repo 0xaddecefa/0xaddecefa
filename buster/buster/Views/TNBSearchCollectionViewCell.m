@@ -12,10 +12,8 @@
 
 @implementation UIColor (Placeholder)
 + (UIColor *)randomColor {
-	CGFloat red = arc4random() % 255 / 255.0;
-	CGFloat green = arc4random() % 255 / 255.0;
-	CGFloat blue = arc4random() % 255 / 255.0;
-	UIColor *color = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+	CGFloat lightness = 128 + arc4random() % 127 / 127.0;
+	UIColor *color = [UIColor colorWithWhite:lightness alpha:1.0f];
 	return color;
 }
 
@@ -30,6 +28,8 @@
 @property (nonatomic, strong) NSDate *gestureStarted;
 
 @property (nonatomic, assign) CGPoint gestureInitialLocation;
+
+@property (nonatomic, strong) NSTimer *hideDetailsTimer;
 @end
 
 @implementation TNBSearchCollectionViewCell
@@ -54,20 +54,45 @@
 	return self;
 }
 
+- (void)dealloc {
+	[self.hideDetailsTimer invalidate];
+	self.hideDetailsTimer = nil;
+}
+
 - (void)setImageResourceName: (NSString *)resourceName
 					andTitle: (NSString *)title {
 
 	NSString *coverURLString = [[TNBImageManager sharedInstance] urlStringForResource:resourceName type:EImageTypePoster width:self.bounds.size.width];
 	NSURL *coverUrl = [NSURL URLWithString:coverURLString];
 	if (coverUrl) {
-		[self.backgroundImageView sd_setImageWithURL:coverUrl];
+		__block TNBSearchCollectionViewCell *blockSelf = self;
+		[self.backgroundImageView sd_setImageWithURL: coverUrl
+										   completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+											   if (image && !error) {
+												   [blockSelf showContent];
+											   }
+										   }];
 	}
+	if (title) {
+		self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString: title
+																		 attributes: @{
+																					   NSFontAttributeName : [UIFont preferredFontForTextStyle: IS_DEVICE_IPAD ? UIFontTextStyleHeadline : UIFontTextStyleSubheadline],
+																					   NSForegroundColorAttributeName : [UIColor whiteColor],
+
+
+																								   }];
+	} else {
+		self.titleLabel.attributedText = nil;
+	}
+	
 	[self setNeedsLayout];
 }
 
 
 - (void)prepareForReuse {
-	self.backgroundColor = [UIColor randomColor];
+	[self.hideDetailsTimer invalidate];
+	self.hideDetailsTimer = nil;
+
 	self.backgroundImageView.image = nil;
 	self.titleLabel.attributedText = nil;
 	[self.backgroundImageView sd_cancelCurrentImageLoad];
@@ -75,7 +100,11 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-
+	CGRect boundingRect = CGRectInset(self.containerView.bounds, 10.0f, 10.0f);
+	CGFloat height = [self.titleLabel.attributedText boundingRectWithSize: boundingRect.size
+																  options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+																  context: nil].size.height;
+	self.titleLabel.frame = CGRectMake(10.0f, self.containerView.bounds.size.height - height - 10.0f, boundingRect.size.width, height);
 
 
 }
@@ -94,6 +123,8 @@
 	if (!_titleLabel) {
 		_titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		_titleLabel.backgroundColor = [UIColor clearColor];
+		_titleLabel.numberOfLines = 0;
+		_titleLabel.textAlignment = NSTextAlignmentCenter;
 	}
 	return _titleLabel;
 }
@@ -102,7 +133,7 @@
 	if (!_containerView) {
 		_containerView = [[UIView alloc] initWithFrame:self.bounds];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		_containerView.backgroundColor = [UIColor clearColor];
+		_containerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
 	}
 	return _containerView;
 }
@@ -123,6 +154,7 @@
 		self.gestureInitialLocation = [gesture locationInView:[UIApplication sharedApplication].keyWindow];
 
 		[self highlighted:YES];
+		[self showContent];
 	}
 
 	if (UIGestureRecognizerStateChanged == gesture.state) {
@@ -169,6 +201,27 @@
 					 completion:nil];
 }
 
+- (void)showContent {
+	[self.hideDetailsTimer invalidate];
+	__block TNBSearchCollectionViewCell *blockSelf = self;
+	[UIView animateWithDuration:0.5f
+					 animations:^{
+						 blockSelf.containerView.alpha = 1.0f;
+	} completion:^(BOOL finished) {
+		blockSelf.hideDetailsTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f target:blockSelf selector:@selector(hideContent) userInfo:nil repeats:NO];
+	}];
+}
+
+- (void)hideContent {
+	__block TNBSearchCollectionViewCell *blockSelf = self;
+	[UIView animateWithDuration:0.5f
+					 animations:^{
+						 if (blockSelf.backgroundImageView.image) {
+							 blockSelf.containerView.alpha = 0.0f;
+							 blockSelf.hideDetailsTimer = nil;
+						 }
+					 }];
+}
 
 
 @end

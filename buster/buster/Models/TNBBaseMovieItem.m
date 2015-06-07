@@ -32,8 +32,8 @@
 	self = [self init];
 	if (self) {
 		self.id = DYNAMIC_CAST(dictionary[@"id"], NSNumber);
-		self.title = DYNAMIC_CAST(dictionary[@"id"], NSString);
-		self.voteAverage = DYNAMIC_CAST(dictionary[@"id"], NSNumber);
+		self.title = DYNAMIC_CAST(dictionary[@"title"], NSString);
+		self.voteAverage = DYNAMIC_CAST(dictionary[@"vote_average"], NSNumber);
 
 		self.originalLanguage = DYNAMIC_CAST(dictionary[@"original_language"], NSString);
 		self.originalTitle = DYNAMIC_CAST(dictionary[@"original_title"], NSString);

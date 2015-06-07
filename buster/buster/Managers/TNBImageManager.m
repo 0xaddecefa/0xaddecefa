@@ -67,6 +67,9 @@ static NSString *kImageConfigurationCache = @"imageConfigurationCache";
 - (NSString *)urlStringForResource: (NSString *)resourceName
 							  type: (EImageType)resourceType
 							 width: (CGFloat)width {
+
+	if (!resourceName) return nil;
+
 	NSString *urlString = nil;
 
 	width *= [[UIScreen mainScreen] scale];
