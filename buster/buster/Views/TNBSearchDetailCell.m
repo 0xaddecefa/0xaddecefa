@@ -76,6 +76,8 @@ typedef NS_ENUM(NSUInteger, EScrollViewState) {
 											  [blockSelf setNeedsLayout];
 										  }
 									  }];
+	} else {
+		self.coverImageView.image = nil;
 	}
 
 	NSString *backgroundURLString = [[TNBImageManager sharedInstance] urlStringForResource:posterResourceName type:EImageTypePoster width:self.bounds.size.width];
@@ -92,6 +94,8 @@ typedef NS_ENUM(NSUInteger, EScrollViewState) {
 											  [blockSelf setNeedsLayout];
 										  }
 									  }];
+	} else {
+		self.backgroundImageView.image = nil;
 	}
 
 
