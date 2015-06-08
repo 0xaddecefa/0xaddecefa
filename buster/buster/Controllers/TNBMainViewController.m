@@ -11,8 +11,9 @@
 #import "TNBSearchModel.h"
 #import "TNBBaseMovieItem.h"
 
-
 #import "FMMosaicLayout.h"
+
+#import "TNBDetailViewController.h"
 
 #define REUSE_IDENTIFIER (@"TNBSearchCollectionViewCellIdentifier")
 
@@ -202,8 +203,10 @@
 	[myCell setImageResourceName: movieItem.posterPath
 						andTitle: movieItem.title];
 
+	__block TNBMainViewController *blockSelf = self;
 	myCell.defaultActionCallback = ^() {
-
+		TNBDetailViewController *vc = [[TNBDetailViewController alloc] initWithViewModel:self.searchModel initialIndex:indexPath.row];
+		[blockSelf.navigationController pushViewController:vc animated:YES];
 	};
 
 	return cell;

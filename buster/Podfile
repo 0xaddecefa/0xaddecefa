@@ -5,3 +5,5 @@ pod 'AFNetworking', '~> 2.0'
 pod 'SDWebImage'
 
 pod 'FMMosaicLayout'
+
+pod 'iCarousel', '~> 1.7.6'
