@@ -60,6 +60,7 @@ typedef NS_ENUM(NSUInteger, EScrollViewState) {
 	return self;
 }
 
+// this function could be extended so the TNBExtendedMovieItem properties would be used as well
 - (void)setPosterResourceName: (NSString *)posterResourceName
 	   backgroundResourceName: (NSString *)backgroundResourceName
 						title: (NSString *)title
