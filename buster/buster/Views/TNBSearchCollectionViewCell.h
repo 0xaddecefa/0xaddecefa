@@ -12,7 +12,10 @@ typedef void(^ActionCallback)(void);
 
 @interface TNBSearchCollectionViewCell : UICollectionViewCell
 
+//for short tap, and as a fallback if no secondary action is defined
 @property (nonatomic, copy) ActionCallback defaultActionCallback;
+
+//could be used for secondary action (fx flipping the Cell, and show some interesting data in the backside)
 @property (nonatomic, copy) ActionCallback secondaryActionCallback;
 
 - (id)initWithFrame:(CGRect)frame;
