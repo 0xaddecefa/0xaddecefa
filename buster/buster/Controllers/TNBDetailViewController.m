@@ -47,7 +47,7 @@
 
 - (iCarousel *)carouselView {
 	if (!_carouselView) {
-		CGRect frame = UIEdgeInsetsInsetRect(self.view.bounds, UIEdgeInsetsMake(100.0f, 0.0f, 0.0f, 0.0f));
+		CGRect frame = UIEdgeInsetsInsetRect(self.view.bounds, UIEdgeInsetsMake(64.0f + 20.0f, 0.0f, 0.0f, 0.0f));
 		_carouselView = [[iCarousel alloc] initWithFrame:frame];
 		_carouselView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
