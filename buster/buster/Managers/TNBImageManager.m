@@ -10,6 +10,7 @@
 #import "TNBNetworkManager.h"
 
 #import "TNBImageConfigurationModel.h"
+#import "SDImageCache.h"
 
 static NSString *kImageConfigurationCache = @"imageConfigurationCache";
 
@@ -38,7 +39,12 @@ static NSString *kImageConfigurationCache = @"imageConfigurationCache";
 			self.configurationModel = [[TNBImageConfigurationModel alloc] initWithDictionary:cachedImageConfiguration];
 		}
 
+		[SDImageCache sharedImageCache].maxCacheSize = 100*1024*1024;
+		[SDImageCache sharedImageCache].maxMemoryCost = 10*1024*1024;
+
 		[self refreshConfiguration];
+
+
 	}
 
 	return self;
@@ -61,7 +67,7 @@ static NSString *kImageConfigurationCache = @"imageConfigurationCache";
 }
 
 - (void)clearMemoryCache {
-
+    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 - (NSString *)urlStringForResource: (NSString *)resourceName
