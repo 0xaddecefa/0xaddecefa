@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TNBSearchDetailCell : UIScrollView
+@interface TNBSearchDetailCell : UIView
+
+@property (nonatomic, strong, readonly) UIScrollView *contentView;
+
+- (void)setPosterResourceName: (NSString *)posterResourceName
+	   backgroundResourceName: (NSString *)backgroundResourceName
+						title: (NSString *)title
+					 overview: (NSString *)overView;
+
 
 
 

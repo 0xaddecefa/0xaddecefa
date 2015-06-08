@@ -10,6 +10,7 @@
 		20EA10825CBB42E684AA06F7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B3BF82B35E57E418C23944 /* libPods.a */; };
 		CC796DDB1B251A0800E9FC42 /* TNBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DDA1B251A0800E9FC42 /* TNBDetailViewController.m */; };
 		CC796DDE1B251C5B00E9FC42 /* TNBSearchDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DDD1B251C5B00E9FC42 /* TNBSearchDetailCell.m */; };
+		CC796DE11B2535F700E9FC42 /* TNBExtendedMovieItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DE01B2535F700E9FC42 /* TNBExtendedMovieItem.m */; };
 		CCF328E41B2231F900D80A17 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF328E31B2231F900D80A17 /* main.m */; };
 		CCF328E71B2231F900D80A17 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF328E61B2231F900D80A17 /* AppDelegate.m */; };
 		CCF328EF1B2231F900D80A17 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCF328EE1B2231F900D80A17 /* Images.xcassets */; };
@@ -32,6 +33,8 @@
 		CC796DDA1B251A0800E9FC42 /* TNBDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBDetailViewController.m; sourceTree = "<group>"; };
 		CC796DDC1B251C5B00E9FC42 /* TNBSearchDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBSearchDetailCell.h; sourceTree = "<group>"; };
 		CC796DDD1B251C5B00E9FC42 /* TNBSearchDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBSearchDetailCell.m; sourceTree = "<group>"; };
+		CC796DDF1B2535F700E9FC42 /* TNBExtendedMovieItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBExtendedMovieItem.h; sourceTree = "<group>"; };
+		CC796DE01B2535F700E9FC42 /* TNBExtendedMovieItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBExtendedMovieItem.m; sourceTree = "<group>"; };
 		CCF328DE1B2231F900D80A17 /* buster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = buster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCF328E21B2231F900D80A17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CCF328E31B2231F900D80A17 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 				CCF329221B23C6D900D80A17 /* TNBSearchModel.m */,
 				CCF3292E1B24B0CF00D80A17 /* TNBImageConfigurationModel.h */,
 				CCF3292F1B24B0CF00D80A17 /* TNBImageConfigurationModel.m */,
+				CC796DDF1B2535F700E9FC42 /* TNBExtendedMovieItem.h */,
+				CC796DE01B2535F700E9FC42 /* TNBExtendedMovieItem.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 				CCF329201B23C67F00D80A17 /* TNBBaseMovieItem.m in Sources */,
 				CCF329301B24B0CF00D80A17 /* TNBImageConfigurationModel.m in Sources */,
 				CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */,
+				CC796DE11B2535F700E9FC42 /* TNBExtendedMovieItem.m in Sources */,
 				CCF328E41B2231F900D80A17 /* main.m in Sources */,
 				CC796DDE1B251C5B00E9FC42 /* TNBSearchDetailCell.m in Sources */,
 			);

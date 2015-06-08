@@ -10,7 +10,7 @@
 
 @interface TNBBaseMovieItem()
 
-@property (nonatomic, strong, readwrite) NSNumber *id;
+@property (nonatomic, strong, readwrite) NSNumber *movieId;
 @property (nonatomic, strong, readwrite) NSString *title;
 @property (nonatomic, strong, readwrite) NSNumber *voteAverage;
 
@@ -31,7 +31,7 @@
 - (id)initWithDictionary: (NSDictionary *)dictionary {
 	self = [self init];
 	if (self) {
-		self.id = DYNAMIC_CAST(dictionary[@"id"], NSNumber);
+		self.movieId = DYNAMIC_CAST(dictionary[@"id"], NSNumber);
 		self.title = DYNAMIC_CAST(dictionary[@"title"], NSString);
 		self.voteAverage = DYNAMIC_CAST(dictionary[@"vote_average"], NSNumber);
 

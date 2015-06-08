@@ -10,7 +10,7 @@
 
 @interface TNBBaseMovieItem : NSObject
 
-@property (nonatomic, strong, readonly) NSNumber *id;
+@property (nonatomic, strong, readonly) NSNumber *movieId;
 @property (nonatomic, strong, readonly) NSString *title;
 @property (nonatomic, strong, readonly) NSNumber *voteAverage;
 
