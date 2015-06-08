@@ -39,8 +39,17 @@
 	[super viewDidLoad];
 	[self.view addSubview:self.carouselView];
 	self.view.backgroundColor = [UIColor whiteColor];
+	[self.searchModel addObserver: self
+					   forKeyPath: @"currentState"
+						  options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+						  context: nil];
+
 	[self.carouselView scrollToItemAtIndex:self.currentIndex animated:NO];
 
+}
+
+- (void)dealloc {
+	[self.searchModel removeObserver:self forKeyPath:@"currentState"];
 }
 
 #pragma mark - lazy getters
@@ -103,9 +112,27 @@
 			} else {
 			}
 		}
+	} else {
+		if (self.searchModel.currentState == EModelStateHasContent) {
+			[self.searchModel loadNextPage];
+		}
 	}
 
 	return view;
+}
+
+#pragma mark - KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath
+					  ofObject:(id)object
+						change:(NSDictionary *)change
+					   context:(void *)context {
+	if ([keyPath isEqualToString:@"currentState"]) {
+
+		if (self.searchModel.currentState == EModelStateHasContent ||
+			self.searchModel.currentState == EModelStateHasAllContent) {
+			[self.carouselView reloadData];
+		}
+	}
 }
 
 #pragma mark - iCarouselDelegate
