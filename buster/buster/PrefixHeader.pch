@@ -13,7 +13,7 @@
 #import "NSObject+Multithreading.h"
 
 #define IS_DEVICE_IPAD  (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#define IS_DEVICE_ORIENTATION_LANDSCAPE (UIInterfaceOrientationIsLandscape([[UIDevice currentDevice] orientation]) || UIDeviceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+#define IS_DEVICE_ORIENTATION_LANDSCAPE (UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation]) || UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
 
 #define DYNAMIC_CAST(obj,class) ([(obj) isKindOfClass:(Class)objc_getClass(#class)] ? (class *)obj : NULL)
 

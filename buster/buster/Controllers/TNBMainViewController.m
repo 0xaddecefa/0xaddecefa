@@ -236,7 +236,7 @@
 - (NSInteger)collectionView: (UICollectionView *)collectionView
 					 layout: (FMMosaicLayout *)collectionViewLayout
    numberOfColumnsInSection: (NSInteger)section {
-	return 2;IS_DEVICE_IPAD ? IS_DEVICE_ORIENTATION_LANDSCAPE ? 4 : 3 : 2;
+	return 2;//IS_DEVICE_IPAD ? IS_DEVICE_ORIENTATION_LANDSCAPE ? 4 : 3 : 2;
 }
 
 

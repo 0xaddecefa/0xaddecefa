@@ -12,7 +12,7 @@
 
 @implementation UIColor (Placeholder)
 + (UIColor *)randomColor {
-	CGFloat lightness = 128 + arc4random() % 127 / 127.0;
+	CGFloat lightness = (128 + arc4random() % 127) / 255.0f;
 	UIColor *color = [UIColor colorWithWhite:lightness alpha:1.0f];
 	return color;
 }

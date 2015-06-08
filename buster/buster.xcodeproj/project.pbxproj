@@ -20,6 +20,7 @@
 		CCF3292A1B23DAD700D80A17 /* TNBSearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF329291B23DAD700D80A17 /* TNBSearchCollectionViewCell.m */; };
 		CCF3292D1B24A92900D80A17 /* TNBImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3292C1B24A92900D80A17 /* TNBImageManager.m */; };
 		CCF329301B24B0CF00D80A17 /* TNBImageConfigurationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF3292F1B24B0CF00D80A17 /* TNBImageConfigurationModel.m */; };
+		CCF329351B2513AD00D80A17 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCF329331B2513AD00D80A17 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		CCF3292C1B24A92900D80A17 /* TNBImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBImageManager.m; sourceTree = "<group>"; };
 		CCF3292E1B24B0CF00D80A17 /* TNBImageConfigurationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBImageConfigurationModel.h; sourceTree = "<group>"; };
 		CCF3292F1B24B0CF00D80A17 /* TNBImageConfigurationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBImageConfigurationModel.m; sourceTree = "<group>"; };
+		CCF329341B2513AD00D80A17 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		D8557DECF47476B4FE4C3FC2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +105,7 @@
 		CCF328E01B2231F900D80A17 /* buster */ = {
 			isa = PBXGroup;
 			children = (
+				CCF329311B2512C900D80A17 /* Localization */,
 				CCF329241B23CD1700D80A17 /* Extensions */,
 				CCF329101B235C4300D80A17 /* Managers */,
 				CCF3290D1B22329500D80A17 /* Models */,
@@ -179,6 +182,22 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		CCF329311B2512C900D80A17 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				CCF329321B2513AD00D80A17 /* en.lproj */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		CCF329321B2513AD00D80A17 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				CCF329331B2513AD00D80A17 /* Localizable.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -213,6 +232,7 @@
 				TargetAttributes = {
 					CCF328DD1B2231F900D80A17 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 374PEKW5F4;
 					};
 				};
 			};
@@ -222,7 +242,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
 			mainGroup = CCF328D51B2231F900D80A17;
 			productRefGroup = CCF328DF1B2231F900D80A17 /* Products */;
@@ -240,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCF328EF1B2231F900D80A17 /* Images.xcassets in Resources */,
+				CCF329351B2513AD00D80A17 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +318,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CCF329331B2513AD00D80A17 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCF329341B2513AD00D80A17 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CCF328FF1B2231F900D80A17 /* Debug */ = {
@@ -387,6 +418,8 @@
 			baseConfigurationReference = 31091C0C9C9009FD1052153F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = buster/PrefixHeader.pch;
 				INFOPLIST_FILE = buster/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -400,6 +433,8 @@
 			baseConfigurationReference = D8557DECF47476B4FE4C3FC2 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = buster/PrefixHeader.pch;
 				INFOPLIST_FILE = buster/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
