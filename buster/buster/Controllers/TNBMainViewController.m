@@ -30,6 +30,7 @@
 @property (nonatomic, strong) UIView *initialView;
 @property (nonatomic, strong) UIView *loadingView;
 @property (nonatomic, strong) UIView *errorView;
+@property (nonatomic, strong) UIView *emptyView;
 
 @property (nonatomic, assign) BOOL searchBarBecameFirstResponder;
 
@@ -116,10 +117,13 @@
 
 - (UIView *)loadingView {
 	if (!_loadingView) {
+		CGFloat scale = IS_DEVICE_IPAD ? 5.0f : 2.5f;
+
 		_loadingView = [[UIView alloc] initWithFrame:self.stateViewContainerView.bounds];
 		UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		activityIndicator.color = [UIColor magentaColor];
 		activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+		activityIndicator.transform = CGAffineTransformMakeScale(scale, scale);
 		[activityIndicator startAnimating];
 		[_loadingView addSubview:activityIndicator];
 		activityIndicator.center = _loadingView.center;
@@ -137,14 +141,36 @@
 		UILabel *label = [[UILabel alloc] initWithFrame:_errorView.bounds];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		label.textAlignment = NSTextAlignmentCenter;
+		label.numberOfLines = 0;
 
 		label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"error_message", @"Error happened")
 															   attributes: @{
 																			 NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
-																			 NSForegroundColorAttributeName : [UIColor whiteColor],}];
+																			 NSForegroundColorAttributeName : [UIColor whiteColor],
+																			 }];
 		[_errorView addSubview:label];
 	}
 	return _errorView;
+}
+
+- (UIView *)emptyView {
+	if (!_emptyView) {
+		_emptyView = [[UIView alloc] initWithFrame:self.stateViewContainerView.bounds];
+		_emptyView.backgroundColor = [UIColor redColor];
+		_emptyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		UILabel *label = [[UILabel alloc] initWithFrame:_emptyView.bounds];
+		label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		label.textAlignment = NSTextAlignmentCenter;
+		label.numberOfLines = 0;
+
+		label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"empty_message", @"No results found")
+															   attributes: @{
+																			 NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
+																			 NSForegroundColorAttributeName : [UIColor whiteColor],}];
+		[_emptyView addSubview:label];
+
+	}
+	return _emptyView;
 }
 
 - (UIView *)initialView {
@@ -157,8 +183,7 @@
 		label.textAlignment = NSTextAlignmentCenter;
 		label.numberOfLines = 0;
 
-		TNBTextAttachment *attachment = [[TNBTextAttachment alloc] init];
-		attachment.origin = CGPointMake(0, -2.0f);
+		NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
 		attachment.image = [UIImage imageNamed:@"icon_search"];
 
 		NSMutableAttributedString *decoratedMessage = [[NSAttributedString attributedStringWithAttachment:attachment] mutableCopy];
@@ -329,6 +354,8 @@
 			return self.loadingView;
 		case EModelStateError:
 			return self.errorView;
+		case EModelStateEmpty:
+			return self.emptyView;
 		default:
 			return nil;
 	}

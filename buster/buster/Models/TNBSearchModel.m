@@ -63,11 +63,15 @@
 											  }
 										  }
 
-										  self.currentState = EModelStateHasContent;
-
+										  if (self.movies.count > 0) {
+											  NSNumber *numberOfPages = DYNAMIC_CAST(responseDictionary[@"total_pages"], NSNumber);
+											  self.currentState = self.currentPage < numberOfPages.unsignedIntegerValue ? EModelStateHasContent : EModelStateHasAllContent;
+										  } else {
+											  self.currentState = EModelStateEmpty;
+										  }
 
 									  } fail: ^(TNBNetworkRequest *operation, NSError *error) {
-										  
+										  self.currentState = EModelStateError;
 									  }];
 }
 
