@@ -12,6 +12,7 @@
 #import "TNBBaseMovieItem.h"
 
 #import "FMMosaicLayout.h"
+#import "TNBTextAttachment.h"
 
 #import "TNBDetailViewController.h"
 
@@ -154,11 +155,20 @@
 		UILabel *label = [[UILabel alloc] initWithFrame:_initialView.bounds];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		label.textAlignment = NSTextAlignmentCenter;
+		label.numberOfLines = 0;
 
-		label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"initial_message", @"Call to action msg")
-															   attributes: @{
-																			 NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
-																			 NSForegroundColorAttributeName : [UIColor blackColor],}];
+		TNBTextAttachment *attachment = [[TNBTextAttachment alloc] init];
+		attachment.origin = CGPointMake(0, -2.0f);
+		attachment.image = [UIImage imageNamed:@"icon_search"];
+
+		NSMutableAttributedString *decoratedMessage = [[NSAttributedString attributedStringWithAttachment:attachment] mutableCopy];
+		NSAttributedString *message = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", NSLocalizedString(@"initial_message", @"Call to action msg")]
+																	  attributes: @{
+																					NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
+																					NSForegroundColorAttributeName : [UIColor blackColor],}];
+		[decoratedMessage appendAttributedString:message];
+
+		label.attributedText = decoratedMessage;
 		[_initialView addSubview:label];
 	}
 	return _initialView;
