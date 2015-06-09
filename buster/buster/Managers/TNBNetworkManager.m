@@ -42,6 +42,10 @@
 	self = [super initWithBaseURL: [NSURL URLWithString: BASE_URL]];
 
 	if (self) {
+		NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:2 * 1024 * 1024
+															   diskCapacity:100 * 1024 * 1024
+																   diskPath:nil];
+		[NSURLCache setSharedURLCache:sharedCache];
 
 		self.incomingBuffer = [NSMutableArray array];
 		self.requestDateBuffer = [NSMutableArray array];
