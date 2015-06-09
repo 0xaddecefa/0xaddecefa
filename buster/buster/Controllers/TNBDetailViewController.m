@@ -44,6 +44,7 @@
 						  options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
 						  context: nil];
 
+	self.navigationController.navigationBar.hidden = YES;
 	[self.carouselView scrollToItemAtIndex:self.currentIndex animated:NO];
 
 }
@@ -56,7 +57,7 @@
 
 - (iCarousel *)carouselView {
 	if (!_carouselView) {
-		CGRect frame = UIEdgeInsetsInsetRect(self.view.bounds, UIEdgeInsetsMake(64.0f + 20.0f, 0.0f, 0.0f, 0.0f));
+		CGRect frame = CGRectOffset(self.view.bounds, 0.0f, 64.0f + 20.0f);
 		_carouselView = [[iCarousel alloc] initWithFrame:frame];
 		_carouselView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 

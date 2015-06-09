@@ -13,17 +13,23 @@
 #import "FXBlurView.h"
 
 typedef NS_ENUM(NSUInteger, EScrollViewState) {
-	EScrollViewStateZero = 0,
+	EScrollViewStateNone = 0,
 	EScrollViewStateTop = 1,
 	EScrollViewStateLarge = 2,
 };
+
+static const CGFloat kMaxRadii = 10.0f;
 
 @interface TNBSearchDetailCell() <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *contentView;
 
 @property (nonatomic, assign) EScrollViewState scrollViewState;
+
+@property (nonatomic, assign) CGFloat transformStage;
 @property (nonatomic, assign) CGFloat maxScale;
+@property (nonatomic, assign) CGFloat maxOffset;
+@property (nonatomic, assign) CGFloat initialOffset;
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIImageView *coverImageView;
@@ -37,17 +43,11 @@ typedef NS_ENUM(NSUInteger, EScrollViewState) {
 - (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
-		UIBezierPath *maskPath;
-		maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-										 byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-											   cornerRadii:CGSizeMake(10.0, 10.0)];
 
-		CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-		maskLayer.frame = self.bounds;
-		maskLayer.path = maskPath.CGPath;
-		self.layer.mask = maskLayer;
+		[self setLayerRadii:kMaxRadii];
 
-		self.maxScale = ([UIScreen mainScreen].bounds.size.width / self.bounds.size.width) - 1.0f;
+		self.transformStage = 50.0f;
+
 		self.scrollViewState = EScrollViewStateTop;
 		[self addSubview:self.contentView];
 
@@ -221,36 +221,95 @@ typedef NS_ENUM(NSUInteger, EScrollViewState) {
 
 
 #pragma mark - UIScrollViewDelegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	self.initialOffset = scrollView.contentOffset.y;
+}
 
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-//	if ((self.layer.transform.m11 - 1.0f) > 0.5 * self.maxScale) {
-//
-//		self.scrollViewState = EScrollViewStateLarge;
-//
-//		[UIView animateWithDuration:0.25f animations:^{
-//			self.layer.transform = CATransform3DMakeScale(self.maxScale + 1.0f, self.maxScale + 1.0, 1.0f);
-//		}];
-//	}
-//
-//}
-//
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView { [self setNeedsLayout];}
-//
-//	if (self.scrollViewState == EScrollViewStateTop) {
-//		CGFloat contentOffsetY = scrollView.contentOffset.y;
-//		if (contentOffsetY > 0.0f) {
-//			CGFloat scale = MIN(self.maxScale, self.maxScale * contentOffsetY / 100.0f) + 1.0f;
-//			CATransform3D transform = CATransform3DMakeScale(scale, scale, 1.0f);
-//			self.layer.transform = transform;
-//		}
-//
-//	}
-//}
-//
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//	self.scrollViewState = (fabs(scrollView.contentOffset.y) < FLT_EPSILON) ? EScrollViewStateTop : EScrollViewStateZero;
-////	if (!CATransform3DIsIdentity(self.layer.transform)) {
-////		self.scrollViewState |= EScrollViewStateLarge;
-////	}
-//}
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+	self.scrollViewState &= ~EScrollViewStateTop;
+}
+
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+	CGAffineTransform transform = CGAffineTransformIdentity;
+	CGFloat radii = kMaxRadii;
+	if ((self.layer.transform.m11 - 1.0f) > 0.5 * self.maxScale) {
+
+		self.scrollViewState = EScrollViewStateLarge;
+		CGFloat scale = self.maxScale + 1.0f;
+		transform = CGAffineTransformTranslate(CGAffineTransformScale(transform, scale, scale), 0, self.maxOffset);
+		radii = 0.0f;
+	}
+	[UIView animateWithDuration:0.25f animations:^{
+		self.transform = transform;
+		[self setLayerRadii:radii];
+	}];
+
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	if (self.scrollViewState & EScrollViewStateTop) {
+		CGFloat contentOffsetY = scrollView.contentOffset.y;
+		if (contentOffsetY > 0.0f && !(self.scrollViewState & EScrollViewStateLarge)) {
+			CGFloat transformRatio = MAX( 0, MIN( 1, contentOffsetY / self.transformStage));
+			CGFloat scale = transformRatio * self.maxScale + 1.0f;
+			CGFloat offset = transformRatio * self.maxOffset;
+			CGAffineTransform transform = CGAffineTransformTranslate(CGAffineTransformScale(CGAffineTransformIdentity, scale, scale), 0.0f, offset);
+			self.transform = transform;
+
+			CGFloat radii = (1-transformRatio) * kMaxRadii;
+			[self setLayerRadii:radii];
+		} else {
+			if (contentOffsetY < 0.0f && self.scrollViewState & EScrollViewStateLarge) {
+				CGFloat transformRatio = 1 - MAX( 0, MIN( 1, -contentOffsetY / self.transformStage));
+				CGFloat scale = transformRatio * self.maxScale + 1.0f;
+				CGFloat offset = transformRatio * self.maxOffset;
+				CGAffineTransform transform = CGAffineTransformTranslate(CGAffineTransformScale(CGAffineTransformIdentity, scale, scale), 0.0f, offset);
+				self.transform = transform;
+
+				CGFloat radii = (1-transformRatio) * kMaxRadii;
+				[self setLayerRadii:radii];
+
+			}
+		}
+
+	}
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	self.scrollViewState = (fabs(scrollView.contentOffset.y) < FLT_EPSILON) ? EScrollViewStateTop : EScrollViewStateNone;
+	if ((self.layer.transform.m11 - 1.0f) > 0.5 * self.maxScale) {
+		self.scrollViewState |= EScrollViewStateLarge;
+	}
+}
+
+- (void)didMoveToWindow {
+	[self recalculateTransformLimits];
+}
+
+- (void)recalculateTransformLimits {
+	self.maxScale = ([UIScreen mainScreen].bounds.size.width / self.bounds.size.width) - 1.0f;
+	CGFloat originalCenter = [self convertPoint:self.center toView:[UIApplication sharedApplication].keyWindow].y;
+	CGFloat offset = originalCenter - ([UIScreen mainScreen].bounds.size.height / 2.0f);
+	self.maxOffset =  offset;
+
+}
+
+- (void)setLayerRadii: (CGFloat) radii {
+
+	radii = MAX(0.0f,MIN(radii,kMaxRadii));
+
+	UIBezierPath *maskPath;
+	maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
+									 byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
+										   cornerRadii:CGSizeMake(radii, radii)];
+
+	CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+	maskLayer.frame = self.bounds;
+	maskLayer.path = maskPath.CGPath;
+	self.layer.mask = maskLayer;
+
+}
+
 @end
