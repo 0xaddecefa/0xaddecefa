@@ -35,6 +35,8 @@
 
 @property (nonatomic, assign) BOOL searchBarBecameFirstResponder;
 
+@property (nonatomic, strong) NSTimer *delayedSearchTimer;
+
 @end
 
 @implementation TNBMainViewController
@@ -224,15 +226,27 @@
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	[self.delayedSearchTimer invalidate];
 	[self.searchModel setQuery:searchBar.text];
 	[self.searchBar resignFirstResponder];
 }
 
+// Throttle a little bit the querys
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
 	if (searchText.length > 2) {
-		if ([self.searchBarLastSearch timeIntervalSinceNow] < -0.5f ) {
-			[self.searchModel setQuery:searchText];
-		}
+		[self.delayedSearchTimer invalidate];
+		self.delayedSearchTimer = [NSTimer scheduledTimerWithTimeInterval: 0.25f
+																   target: self
+																 selector: @selector(setQuery:)
+																 userInfo: searchText
+																  repeats: NO];
+	}
+}
+
+- (void)setQuery:(NSTimer *)timer {
+	NSString *query = DYNAMIC_CAST([timer userInfo], NSString);
+	if (query) {
+		[self.searchModel setQuery:query];
 	}
 }
 
