@@ -63,6 +63,8 @@
 	self.running = YES;
 
 	self.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+	[runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
 	while (self.running) {
 		@autoreleasepool {
 
@@ -78,7 +80,7 @@
 				}
 			}
 
-			usleep(25);
+			[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow:0.5]];
 		}
 	}
 }
@@ -152,9 +154,6 @@
 
 }
 
-- (void)cancelRequest:(TNBNetworkRequest *)request {
-	
-}
 
 - (TNBNetworkRequest *)search: (NSString *)query
 						 page: (NSUInteger)page
