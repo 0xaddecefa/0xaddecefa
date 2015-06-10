@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TNBExtendedMovieItem.h"
 
 @class TNBSearchDetailCell;
 
@@ -22,10 +23,7 @@
 
 @property (nonatomic, strong, readonly) UIScrollView *contentView;
 
-- (void)setPosterResourceName: (NSString *)posterResourceName
-	   backgroundResourceName: (NSString *)backgroundResourceName
-						title: (NSString *)title
-					 overview: (NSString *)overView;
+- (void)setMovieItem:(TNBBaseMovieItem *)item;
 
 
 

@@ -17,7 +17,7 @@
 @property (nonatomic, strong, readwrite) NSString *originalLanguage;
 @property (nonatomic, strong, readwrite) NSString *originalTitle;
 
-@property (nonatomic, strong, readwrite) NSString *overView;
+@property (nonatomic, strong, readwrite) NSString *overview;
 
 @property (nonatomic, strong, readwrite) NSString *posterPath;
 @property (nonatomic, strong, readwrite) NSString *backdropPath;
@@ -38,7 +38,7 @@
 		self.originalLanguage = DYNAMIC_CAST(dictionary[@"original_language"], NSString);
 		self.originalTitle = DYNAMIC_CAST(dictionary[@"original_title"], NSString);
 
-		self.overView = DYNAMIC_CAST(dictionary[@"overview"], NSString);
+		self.overview = DYNAMIC_CAST(dictionary[@"overview"], NSString);
 
 		self.posterPath = DYNAMIC_CAST(dictionary[@"poster_path"], NSString);
 		self.backdropPath = DYNAMIC_CAST(dictionary[@"backdrop_path"], NSString);

@@ -8,3 +8,5 @@ pod 'FXBlurView'
 pod 'FMMosaicLayout'
 
 pod 'iCarousel', '~> 1.7.6'
+
+pod 'BlocksKit', '~>2.2.5'

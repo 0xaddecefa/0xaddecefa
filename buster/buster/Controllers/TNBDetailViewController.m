@@ -95,10 +95,7 @@
 	if (index < self.searchModel.movies.count) {
 		TNBBaseMovieItem *movieItem = DYNAMIC_CAST(self.searchModel.movies[index], TNBBaseMovieItem);
 		if (movieItem) {
-			[myCell setPosterResourceName: movieItem.posterPath
-				   backgroundResourceName: movieItem.backdropPath
-									title: movieItem.title
-								 overview: movieItem.overView];
+			[myCell setMovieItem:movieItem];
 
 			if (![movieItem isKindOfClass:[TNBExtendedMovieItem class]]) {
 				NSUInteger movieID = movieItem.movieId.unsignedIntegerValue;
@@ -108,6 +105,7 @@
 
 					if (extendedItem) {
 						[self.searchModel.movies replaceObjectAtIndex:index withObject:extendedItem];
+						[myCell setMovieItem:extendedItem];
 					}
 				} fail:^(TNBNetworkRequest *operation, NSError *error) {
 

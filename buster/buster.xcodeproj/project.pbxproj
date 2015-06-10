@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		20EA10825CBB42E684AA06F7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B3BF82B35E57E418C23944 /* libPods.a */; };
 		CC4036331B27A7E500AAC193 /* TNBTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4036321B27A7E500AAC193 /* TNBTextAttachment.m */; };
+		CC4036361B27B83300AAC193 /* TNBStaticRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4036351B27B83300AAC193 /* TNBStaticRatingView.m */; };
+		CC40363B1B27B89200AAC193 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4036381B27B89200AAC193 /* UIImage+Alpha.m */; };
 		CC796DDB1B251A0800E9FC42 /* TNBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DDA1B251A0800E9FC42 /* TNBDetailViewController.m */; };
 		CC796DDE1B251C5B00E9FC42 /* TNBSearchDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DDD1B251C5B00E9FC42 /* TNBSearchDetailCell.m */; };
 		CC796DE11B2535F700E9FC42 /* TNBExtendedMovieItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DE01B2535F700E9FC42 /* TNBExtendedMovieItem.m */; };
@@ -32,6 +34,10 @@
 		31091C0C9C9009FD1052153F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CC4036311B27A7E500AAC193 /* TNBTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBTextAttachment.h; sourceTree = "<group>"; };
 		CC4036321B27A7E500AAC193 /* TNBTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBTextAttachment.m; sourceTree = "<group>"; };
+		CC4036341B27B83300AAC193 /* TNBStaticRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBStaticRatingView.h; sourceTree = "<group>"; };
+		CC4036351B27B83300AAC193 /* TNBStaticRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBStaticRatingView.m; sourceTree = "<group>"; };
+		CC4036371B27B89200AAC193 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		CC4036381B27B89200AAC193 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		CC796DD91B251A0800E9FC42 /* TNBDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBDetailViewController.h; sourceTree = "<group>"; };
 		CC796DDA1B251A0800E9FC42 /* TNBDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBDetailViewController.m; sourceTree = "<group>"; };
 		CC796DDC1B251C5B00E9FC42 /* TNBSearchDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBSearchDetailCell.h; sourceTree = "<group>"; };
@@ -161,6 +167,8 @@
 		CCF3290E1B22329500D80A17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CC4036341B27B83300AAC193 /* TNBStaticRatingView.h */,
+				CC4036351B27B83300AAC193 /* TNBStaticRatingView.m */,
 				CCF329281B23DAD700D80A17 /* TNBSearchCollectionViewCell.h */,
 				CCF329291B23DAD700D80A17 /* TNBSearchCollectionViewCell.m */,
 				CC796DDC1B251C5B00E9FC42 /* TNBSearchDetailCell.h */,
@@ -194,6 +202,8 @@
 		CCF329241B23CD1700D80A17 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CC4036371B27B89200AAC193 /* UIImage+Alpha.h */,
+				CC4036381B27B89200AAC193 /* UIImage+Alpha.m */,
 				CC4036311B27A7E500AAC193 /* TNBTextAttachment.h */,
 				CC4036321B27A7E500AAC193 /* TNBTextAttachment.m */,
 				CCF329251B23CD1700D80A17 /* NSObject+Multithreading.h */,
@@ -326,6 +336,8 @@
 				CCF3292D1B24A92900D80A17 /* TNBImageManager.m in Sources */,
 				CC4036331B27A7E500AAC193 /* TNBTextAttachment.m in Sources */,
 				CCF329271B23CD1700D80A17 /* NSObject+Multithreading.m in Sources */,
+				CC4036361B27B83300AAC193 /* TNBStaticRatingView.m in Sources */,
+				CC40363B1B27B89200AAC193 /* UIImage+Alpha.m in Sources */,
 				CCF328E71B2231F900D80A17 /* AppDelegate.m in Sources */,
 				CC796DDB1B251A0800E9FC42 /* TNBDetailViewController.m in Sources */,
 				CCF329161B2360CB00D80A17 /* TNBNetworkRequest.m in Sources */,

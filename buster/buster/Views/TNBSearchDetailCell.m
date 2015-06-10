@@ -11,6 +11,7 @@
 #import "TNBImageManager.h"
 #import "UIImageView+WebCache.h"
 #import "FXBlurView.h"
+#import "TNBStaticRatingView.h"
 
 typedef NS_ENUM(NSUInteger, EScrollViewState) {
 	EScrollViewStateNone = 0,
@@ -34,6 +35,7 @@ static const CGFloat kMaxRadii = 10.0f;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIImageView *coverImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) TNBStaticRatingView *ratingView;
 @property (nonatomic, strong) UITextView *overviewTextView;
 
 @end
@@ -54,18 +56,22 @@ static const CGFloat kMaxRadii = 10.0f;
 		[self.contentView addSubview:self.backgroundImageView];
 		[self.contentView addSubview:self.coverImageView];
 		[self.contentView addSubview:self.titleLabel];
+		[self.contentView addSubview:self.ratingView];
 		[self.contentView addSubview:self.overviewTextView];
 	}
 
 	return self;
 }
 
-// this function could be extended so the TNBExtendedMovieItem properties would be used as well
-- (void)setPosterResourceName: (NSString *)posterResourceName
-	   backgroundResourceName: (NSString *)backgroundResourceName
-						title: (NSString *)title
-					 overview: (NSString *)overview {
-	NSString *coverURLString = [[TNBImageManager sharedInstance] urlStringForResource:posterResourceName type:EImageTypePoster width:IS_DEVICE_IPAD ? 180.0f : 120.0f];
+- (void)setMovieItem:(TNBBaseMovieItem *)item {
+//- (void)setPosterResourceName: (NSString *)posterResourceName
+//	   backgroundResourceName: (NSString *)backgroundResourceName
+//						title: (NSString *)title
+//					 overview: (NSString *)overview {
+
+
+
+	NSString *coverURLString = [[TNBImageManager sharedInstance] urlStringForResource:item.posterPath type:EImageTypePoster width:IS_DEVICE_IPAD ? 180.0f : 120.0f];
 	NSURL *coverUrl = [NSURL URLWithString:coverURLString];
 	if (coverUrl) {
 
@@ -80,7 +86,7 @@ static const CGFloat kMaxRadii = 10.0f;
 		self.coverImageView.image = nil;
 	}
 
-	NSString *backgroundURLString = [[TNBImageManager sharedInstance] urlStringForResource:posterResourceName type:EImageTypePoster width:self.bounds.size.width];
+	NSString *backgroundURLString = [[TNBImageManager sharedInstance] urlStringForResource:item.backdropPath type:EImageTypePoster width:self.bounds.size.width];
 	NSURL *backgroundURL = [NSURL URLWithString:backgroundURLString];
 	if (backgroundURL) {
 
@@ -99,8 +105,8 @@ static const CGFloat kMaxRadii = 10.0f;
 	}
 
 
-	if (title) {
-		self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString: title.uppercaseString
+	if (item.title) {
+		self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString: item.title.uppercaseString
 																		 attributes: @{
 																					   NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleHeadline],
 																					   NSForegroundColorAttributeName : [UIColor blackColor],
@@ -111,9 +117,8 @@ static const CGFloat kMaxRadii = 10.0f;
 		self.titleLabel.attributedText = nil;
 	}
 
-
-	if (overview) {
-		self.overviewTextView.attributedText = [[NSAttributedString alloc] initWithString: overview
+	if (item.overview) {
+		self.overviewTextView.attributedText = [[NSAttributedString alloc] initWithString: item.overview
 																			   attributes: @{
 																					   NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleBody],
 																					   NSForegroundColorAttributeName : [UIColor darkTextColor],
@@ -122,6 +127,11 @@ static const CGFloat kMaxRadii = 10.0f;
 		self.overviewTextView.attributedText = nil;
 	}
 
+
+	TNBExtendedMovieItem *extendedItem = DYNAMIC_CAST(item, TNBExtendedMovieItem);
+	self.ratingView.rateValue =  extendedItem.voteAverage.floatValue;
+
+	
 	[self setNeedsLayout];
 	
 }
@@ -156,6 +166,10 @@ static const CGFloat kMaxRadii = 10.0f;
 	frame = CGRectMake(spacer, originY, self.contentView.bounds.size.width - 2 *spacer, height);
 	self.titleLabel.frame = frame;
 
+	//RATING
+	originY = CGRectGetMaxY(frame) + spacer;
+	frame = CGRectMake(spacer,originY,self.contentView.bounds.size.width - 2 * spacer, 22.0f);
+	self.ratingView.frame = frame;
 
 	//OVERVIEW
 	originY = CGRectGetMaxY(frame) + spacer;
@@ -204,6 +218,15 @@ static const CGFloat kMaxRadii = 10.0f;
 		_titleLabel.numberOfLines = 0;
 	}
 	return _titleLabel;
+}
+
+- (TNBStaticRatingView *)ratingView {
+	if (!_ratingView) {
+		_ratingView = [[TNBStaticRatingView alloc] initWithFrame:CGRectZero];
+		_ratingView.backgroundColor = [UIColor clearColor];
+		_ratingView.alignment = NSTextAlignmentCenter;
+	}
+	return _ratingView;
 }
 
 - (UITextView *)overviewTextView {

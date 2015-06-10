@@ -17,7 +17,7 @@
 @property (nonatomic, strong, readonly) NSString *originalLanguage;
 @property (nonatomic, strong, readonly) NSString *originalTitle;
 
-@property (nonatomic, strong, readonly) NSString *overView;
+@property (nonatomic, strong, readonly) NSString *overview;
 
 @property (nonatomic, strong, readonly) NSString *posterPath;
 @property (nonatomic, strong, readonly) NSString *backdropPath;
