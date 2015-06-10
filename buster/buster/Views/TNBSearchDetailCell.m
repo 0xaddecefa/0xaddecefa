@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 #import "FXBlurView.h"
 #import "TNBStaticRatingView.h"
+#import "NSAttributedString+Header.h"
 
 typedef NS_ENUM(NSUInteger, EScrollViewState) {
 	EScrollViewStateNone = 0,
@@ -37,6 +38,10 @@ static const CGFloat kMaxRadii = 10.0f;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) TNBStaticRatingView *ratingView;
 @property (nonatomic, strong) UITextView *overviewTextView;
+@property (nonatomic, strong) UILabel *taglineLabel;
+@property (nonatomic, strong) UILabel *releaseDateLabel;
+@property (nonatomic, strong) UILabel *productionCompaniesLabel;
+@property (nonatomic, strong) UILabel *productionCountriesLabel;
 
 @end
 
@@ -58,18 +63,17 @@ static const CGFloat kMaxRadii = 10.0f;
 		[self.contentView addSubview:self.titleLabel];
 		[self.contentView addSubview:self.ratingView];
 		[self.contentView addSubview:self.overviewTextView];
+
+		[self.contentView addSubview:self.taglineLabel];
+		[self.contentView addSubview:self.releaseDateLabel];
+		[self.contentView addSubview:self.productionCompaniesLabel];
+		[self.contentView addSubview:self.productionCountriesLabel];
 	}
 
 	return self;
 }
 
 - (void)setMovieItem:(TNBBaseMovieItem *)item {
-//- (void)setPosterResourceName: (NSString *)posterResourceName
-//	   backgroundResourceName: (NSString *)backgroundResourceName
-//						title: (NSString *)title
-//					 overview: (NSString *)overview {
-
-
 
 	NSString *coverURLString = [[TNBImageManager sharedInstance] urlStringForResource:item.posterPath type:EImageTypePoster width:IS_DEVICE_IPAD ? 180.0f : 120.0f];
 	NSURL *coverUrl = [NSURL URLWithString:coverURLString];
@@ -118,27 +122,49 @@ static const CGFloat kMaxRadii = 10.0f;
 	}
 
 	if (item.overview) {
-		self.overviewTextView.attributedText = [[NSAttributedString alloc] initWithString: item.overview
-																			   attributes: @{
-																					   NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleBody],
-																					   NSForegroundColorAttributeName : [UIColor darkTextColor],
-																					   }];
+		self.overviewTextView.attributedText = [self attributedStringWithHeader:NSLocalizedString(@"label_header_overview", nil) andBody:item.overview];
 	} else {
 		self.overviewTextView.attributedText = nil;
 	}
 
-
 	TNBExtendedMovieItem *extendedItem = DYNAMIC_CAST(item, TNBExtendedMovieItem);
 	self.ratingView.rateValue =  extendedItem.voteAverage.floatValue;
 
-	
+	if (extendedItem.tagline.length > 0) {
+		self.taglineLabel.attributedText = [self attributedStringWithHeader:NSLocalizedString(@"label_header_tag", nil) andBody:extendedItem.tagline];
+	}
+
+	if (extendedItem.releaseDate) {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+		dateFormatter.timeStyle = NSDateFormatterNoStyle;
+		self.releaseDateLabel.attributedText = [self attributedStringWithHeader:NSLocalizedString(@"label_header_release_date", nil)
+																		andBody:[dateFormatter stringFromDate:extendedItem.releaseDate]];
+	}
+
+	if (extendedItem.productionCountries.count > 0) {
+		NSString *productionCountriesStr = [extendedItem.productionCountries componentsJoinedByString:@"\n"];
+		if (productionCountriesStr) {
+			self.productionCountriesLabel.attributedText = [self attributedStringWithHeader: NSLocalizedString(@"label_header_countries", nil)
+																					andBody: productionCountriesStr];
+		}
+	}
+
+	if (extendedItem.productionCompanies.count > 0) {
+		NSString *productionCompaniesStr = [extendedItem.productionCompanies componentsJoinedByString:@"\n"];
+		if (productionCompaniesStr) {
+			self.productionCountriesLabel.attributedText = [self attributedStringWithHeader: NSLocalizedString(@"label_header_companies", nil)
+																					andBody: productionCompaniesStr];
+		}
+	}
+
 	[self setNeedsLayout];
 	
 }
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-	CGFloat spacer = 10.0f;
+	CGFloat spacer = 20.0f;
 
 	CGFloat imageViewWidth = IS_DEVICE_IPAD ? 180.0f : 120.0f;
 	CGSize imageSize = self.coverImageView.image.size;
@@ -173,15 +199,50 @@ static const CGFloat kMaxRadii = 10.0f;
 
 	//OVERVIEW
 	originY = CGRectGetMaxY(frame) + spacer;
-	height = [self.overviewTextView.attributedText boundingRectWithSize:CGSizeMake(self.contentView.bounds.size.width - 2 * spacer, CGFLOAT_MAX)
+
+	CGFloat width = self.contentView.bounds.size.width - 2 * spacer - self.overviewTextView.textContainerInset.left - self.overviewTextView.textContainerInset.right;
+	height = [self.overviewTextView.attributedText boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
 																  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
 																  context: nil].size.height;
 	frame = CGRectMake(spacer, originY, self.contentView.bounds.size.width - 2 *spacer, height);
 	self.overviewTextView.frame = frame;
 
+	//TAGLINE
+	originY = CGRectGetMaxY(frame) + spacer;
+	height = [self.taglineLabel.attributedText boundingRectWithSize: CGSizeMake(self.contentView.bounds.size.width - 2 * spacer, CGFLOAT_MAX)
+														  options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+														  context: nil].size.height;
+	frame = CGRectMake(spacer, originY, self.contentView.bounds.size.width - 2 *spacer, height);
+	self.taglineLabel.frame = frame;
+
+	//RELEASE DATE
+	originY = CGRectGetMaxY(frame) + spacer;
+	height = [self.releaseDateLabel.attributedText boundingRectWithSize: CGSizeMake(self.contentView.bounds.size.width - 2 * spacer, CGFLOAT_MAX)
+															options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+															context: nil].size.height;
+	frame = CGRectMake(spacer, originY, self.contentView.bounds.size.width - 2 *spacer, height);
+	self.releaseDateLabel.frame = frame;
+
+	//
+	originY = CGRectGetMaxY(frame) + spacer;
+	height = [self.productionCompaniesLabel.attributedText boundingRectWithSize: CGSizeMake(self.contentView.bounds.size.width - 2 * spacer, CGFLOAT_MAX)
+																options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+																context: nil].size.height;
+	frame = CGRectMake(spacer, originY, self.contentView.bounds.size.width - 2 *spacer, height);
+	self.productionCompaniesLabel.frame = frame;
 
 	originY = CGRectGetMaxY(frame) + spacer;
-	self.contentView.contentSize = CGSizeMake(self.contentView.bounds.size.width, originY);
+
+	originY = CGRectGetMaxY(frame) + spacer;
+	height = [self.productionCountriesLabel.attributedText boundingRectWithSize: CGSizeMake(self.contentView.bounds.size.width - 2 * spacer, CGFLOAT_MAX)
+																options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+																context: nil].size.height;
+	frame = CGRectMake(spacer, originY, self.contentView.bounds.size.width - 2 *spacer, height);
+	self.productionCountriesLabel.frame = frame;
+
+	originY = CGRectGetMaxY(frame) + spacer;
+
+	self.contentView.contentSize = CGSizeMake(self.contentView.bounds.size.width, originY * self.transform.a);
 }
 
 #pragma mark - lazy getters
@@ -242,6 +303,42 @@ static const CGFloat kMaxRadii = 10.0f;
 	return _overviewTextView;
 }
 
+- (UILabel *)taglineLabel {
+	if (!_taglineLabel) {
+		_taglineLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_taglineLabel.numberOfLines = 0;
+	}
+	return _taglineLabel;
+}
+
+- (UILabel *)releaseDateLabel {
+	if (!_releaseDateLabel) {
+		_releaseDateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_releaseDateLabel.textAlignment = NSTextAlignmentCenter;
+		_releaseDateLabel.numberOfLines = 0;
+	}
+	return _releaseDateLabel;
+}
+
+- (UILabel *)productionCompaniesLabel {
+	if (!_productionCompaniesLabel) {
+		_productionCompaniesLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_productionCompaniesLabel.textAlignment = NSTextAlignmentCenter;
+		_productionCompaniesLabel.numberOfLines = 0;
+	}
+	return _productionCompaniesLabel;
+}
+
+- (UILabel *)productionCountriesLabel {
+	if (!_productionCountriesLabel) {
+		_productionCountriesLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_productionCountriesLabel.textAlignment = NSTextAlignmentCenter;
+		_productionCountriesLabel.numberOfLines = 0;
+	}
+	return _productionCountriesLabel;
+}
+
+
 - (void)setTransform:(CGAffineTransform)transform {
 	if (CGAffineTransformIsIdentity(self.transform) && !CGAffineTransformIsIdentity(transform)) {
 		[self.delegate cell:self becameFullScreen:YES];
@@ -273,10 +370,15 @@ static const CGFloat kMaxRadii = 10.0f;
 		transform = CGAffineTransformTranslate(CGAffineTransformScale(transform, scale, scale), 0, self.maxOffset);
 		radii = 0.0f;
 	}
+
+	__block TNBSearchDetailCell *blockSelf = self;
 	[UIView animateWithDuration:0.25f animations:^{
 		self.transform = transform;
 		[self setLayerRadii:radii];
+	} completion:^(BOOL finished) {
+		[blockSelf setNeedsLayout];
 	}];
+
 
 }
 
@@ -343,6 +445,28 @@ static const CGFloat kMaxRadii = 10.0f;
 	maskLayer.path = maskPath.CGPath;
 	self.layer.mask = maskLayer;
 
+}
+
+- (NSAttributedString *)attributedStringWithHeader: (NSString *)header andBody:(NSString *)body {
+	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+	paragraphStyle.paragraphSpacing = 10.0f;
+	paragraphStyle.hyphenationFactor = 1.0f;
+	paragraphStyle.lineHeightMultiple = 1.5f;
+
+	NSDictionary *generalStyle = @{
+								   NSParagraphStyleAttributeName : paragraphStyle,
+								   NSForegroundColorAttributeName : [UIColor darkTextColor]
+								   };
+
+	NSDictionary *headerStyle = @{
+								  NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleSubheadline],
+								  };
+
+	NSDictionary *bodyStyle = @{
+								NSFontAttributeName : [UIFont preferredFontForTextStyle: UIFontTextStyleBody],
+								};
+
+	return [NSAttributedString attributedStringWithFormat:@"%@\n%@" values:@[header, body] specifiers:@[generalStyle, headerStyle, bodyStyle]];
 }
 
 @end

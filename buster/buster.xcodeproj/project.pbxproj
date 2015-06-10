@@ -11,6 +11,7 @@
 		CC4036331B27A7E500AAC193 /* TNBTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4036321B27A7E500AAC193 /* TNBTextAttachment.m */; };
 		CC4036361B27B83300AAC193 /* TNBStaticRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4036351B27B83300AAC193 /* TNBStaticRatingView.m */; };
 		CC40363B1B27B89200AAC193 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4036381B27B89200AAC193 /* UIImage+Alpha.m */; };
+		CC40363F1B27D1EA00AAC193 /* NSAttributedString+Header.m in Sources */ = {isa = PBXBuildFile; fileRef = CC40363E1B27D1EA00AAC193 /* NSAttributedString+Header.m */; };
 		CC796DDB1B251A0800E9FC42 /* TNBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DDA1B251A0800E9FC42 /* TNBDetailViewController.m */; };
 		CC796DDE1B251C5B00E9FC42 /* TNBSearchDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DDD1B251C5B00E9FC42 /* TNBSearchDetailCell.m */; };
 		CC796DE11B2535F700E9FC42 /* TNBExtendedMovieItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CC796DE01B2535F700E9FC42 /* TNBExtendedMovieItem.m */; };
@@ -38,6 +39,8 @@
 		CC4036351B27B83300AAC193 /* TNBStaticRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBStaticRatingView.m; sourceTree = "<group>"; };
 		CC4036371B27B89200AAC193 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		CC4036381B27B89200AAC193 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		CC40363D1B27D1EA00AAC193 /* NSAttributedString+Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Header.h"; sourceTree = "<group>"; };
+		CC40363E1B27D1EA00AAC193 /* NSAttributedString+Header.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Header.m"; sourceTree = "<group>"; };
 		CC796DD91B251A0800E9FC42 /* TNBDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBDetailViewController.h; sourceTree = "<group>"; };
 		CC796DDA1B251A0800E9FC42 /* TNBDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBDetailViewController.m; sourceTree = "<group>"; };
 		CC796DDC1B251C5B00E9FC42 /* TNBSearchDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBSearchDetailCell.h; sourceTree = "<group>"; };
@@ -208,6 +211,8 @@
 				CC4036321B27A7E500AAC193 /* TNBTextAttachment.m */,
 				CCF329251B23CD1700D80A17 /* NSObject+Multithreading.h */,
 				CCF329261B23CD1700D80A17 /* NSObject+Multithreading.m */,
+				CC40363D1B27D1EA00AAC193 /* NSAttributedString+Header.h */,
+				CC40363E1B27D1EA00AAC193 /* NSAttributedString+Header.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				CCF3291A1B23BEAA00D80A17 /* TNBMainViewController.m in Sources */,
 				CC796DE11B2535F700E9FC42 /* TNBExtendedMovieItem.m in Sources */,
 				CCF328E41B2231F900D80A17 /* main.m in Sources */,
+				CC40363F1B27D1EA00AAC193 /* NSAttributedString+Header.m in Sources */,
 				CC796DDE1B251C5B00E9FC42 /* TNBSearchDetailCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
