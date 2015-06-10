@@ -190,7 +190,6 @@
 								  self.view.bounds.size.height * scale);
 
 
-		//UIEdgeInsetsInsetRect(self.carouselView.bounds, UIEdgeInsetsMake(0.0f, edge, 0.0f, edge));
 		view = [[TNBSearchDetailCell alloc] initWithFrame:frame];
 		view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
