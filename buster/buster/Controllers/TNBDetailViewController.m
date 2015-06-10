@@ -14,7 +14,7 @@
 
 #import "TNBNetworkManager.h"
 
-@interface TNBDetailViewController() <iCarouselDataSource, iCarouselDelegate>
+@interface TNBDetailViewController() <iCarouselDataSource, iCarouselDelegate, TNBSearchDetailCellDelegate>
 
 @property (nonatomic, strong) TNBSearchModel *searchModel;
 @property (nonatomic, assign) NSUInteger currentIndex;
@@ -86,6 +86,8 @@
 		CGRect frame = UIEdgeInsetsInsetRect(self.carouselView.bounds, UIEdgeInsetsMake(0.0f, edge, 0.0f, edge));
 		view = [[TNBSearchDetailCell alloc] initWithFrame:frame];
 		view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+		TNBSearchDetailCell *myCell = DYNAMIC_CAST(view, TNBSearchDetailCell);
+		myCell.delegate = self;
 	}
 
 	__block TNBSearchDetailCell *myCell = DYNAMIC_CAST(view, TNBSearchDetailCell);
@@ -122,7 +124,26 @@
 	return view;
 }
 
+#pragma mark - iCarouselDelegate
+
+
+- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
+	switch (option) {
+		case iCarouselOptionSpacing:
+			return IS_DEVICE_IPAD ? 1.05f : 1.1f;
+		default:
+			return value;
+	}
+}
+
+#pragma mark - TNBSearchDetailCellDelegate
+
+- (void)cell: (TNBSearchDetailCell *) cell becameFullScreen:(BOOL)fullscreen {
+	self.carouselView.scrollEnabled = !fullscreen;
+}
+
 #pragma mark - KVO
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
 					  ofObject:(id)object
 						change:(NSDictionary *)change
@@ -136,15 +157,4 @@
 	}
 }
 
-#pragma mark - iCarouselDelegate
-
-
-- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
-	switch (option) {
-		case iCarouselOptionSpacing:
-			return IS_DEVICE_IPAD ? 1.05f : 1.1f;
-		default:
-			return value;
-	}
-}
 @end

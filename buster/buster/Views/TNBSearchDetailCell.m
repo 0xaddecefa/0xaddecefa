@@ -219,6 +219,16 @@ static const CGFloat kMaxRadii = 10.0f;
 	return _overviewTextView;
 }
 
+- (void)setTransform:(CGAffineTransform)transform {
+	if (CGAffineTransformIsIdentity(self.transform) && !CGAffineTransformIsIdentity(transform)) {
+		[self.delegate cell:self becameFullScreen:YES];
+	}
+	if  (!CGAffineTransformIsIdentity(self.transform) && CGAffineTransformIsIdentity(transform)) {
+		[self.delegate cell:self becameFullScreen:NO];
+	}
+
+	[super setTransform:transform];
+}
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
