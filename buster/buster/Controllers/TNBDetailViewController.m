@@ -44,7 +44,6 @@
 						  options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
 						  context: nil];
 
-	self.navigationController.navigationBar.hidden = YES;
 	[self.carouselView scrollToItemAtIndex:self.currentIndex animated:NO];
 
 }
@@ -138,6 +137,8 @@
 
 - (void)cell: (TNBSearchDetailCell *) cell becameFullScreen:(BOOL)fullscreen {
 	self.carouselView.scrollEnabled = !fullscreen;
+
+	[self.navigationController setNavigationBarHidden:fullscreen animated:NO];
 }
 
 #pragma mark - KVO
