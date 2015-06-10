@@ -18,8 +18,6 @@
 
 @property (nonatomic, assign, readwrite) EModelState currentState;
 
-@property (nonatomic, strong) TNBNetworkRequest *currentRequest;
-
 @property (nonatomic, assign) NSUInteger currentPage;
 @property (nonatomic, strong) NSString *query;
 @end
@@ -29,10 +27,6 @@
 - (void)setQuery: (NSString *)query {
 	if (![self.query isEqualToString:query]) {
 		_query = query;
-
-		if (self.currentRequest) {
-			[[TNBNetworkManager sharedInstance] cancelRequest:self.currentRequest];
-		}
 
 		[self reset];
 

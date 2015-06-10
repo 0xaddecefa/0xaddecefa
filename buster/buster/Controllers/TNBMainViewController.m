@@ -22,6 +22,7 @@
 @property (nonatomic, strong) TNBSearchModel *searchModel;
 
 @property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) NSDate *searchBarLastSearch;
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -199,6 +200,14 @@
 	return _initialView;
 }
 
+- (NSDate *)searchBarLastSearch {
+	if (!_searchBarLastSearch) {
+		_searchBarLastSearch = [NSDate dateWithTimeIntervalSince1970:0.0f];
+	}
+	return _searchBarLastSearch;
+}
+
+
 #pragma mark - custom setters
 - (void)setSearchModel:(TNBSearchModel *)searchModel {
 	if (searchModel != _searchModel) {
@@ -217,6 +226,14 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	[self.searchModel setQuery:searchBar.text];
 	[self.searchBar resignFirstResponder];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+	if (searchText.length > 2) {
+		if ([self.searchBarLastSearch timeIntervalSinceNow] < -0.5f ) {
+			[self.searchModel setQuery:searchText];
+		}
+	}
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -298,7 +315,9 @@
 		[self showState:self.searchModel.currentState];
 
 		if (self.searchModel.currentState == EModelStateHasContent ||
-			self.searchModel.currentState == EModelStateHasAllContent) {
+			self.searchModel.currentState == EModelStateHasAllContent ||
+			self.searchModel.currentState == EModelStateError ||
+			self.searchModel.currentState == EModelStateEmpty ) {
 			[self.collectionView reloadData];
 		}
 	}
