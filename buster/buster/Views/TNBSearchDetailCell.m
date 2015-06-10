@@ -238,8 +238,6 @@ static const CGFloat kMaxRadii = 10.0f;
 	self.productionCompaniesLabel.frame = frame;
 
 	originY = CGRectGetMaxY(frame) + spacer;
-
-	originY = CGRectGetMaxY(frame) + spacer;
 	height = [self.productionCountriesLabel.attributedText boundingRectWithSize: CGSizeMake(self.contentView.bounds.size.width - 2 * spacer, CGFLOAT_MAX)
 																options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
 																context: nil].size.height;

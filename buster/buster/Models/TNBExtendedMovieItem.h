@@ -10,8 +10,6 @@
 
 @interface TNBExtendedMovieItem : TNBBaseMovieItem
 @property (nonatomic, strong, readonly) NSString *tagline;
-@property (nonatomic, strong, readonly) NSString *originalTitle;
-@property (nonatomic, strong, readonly) NSNumber *voteAverage;
 @property (nonatomic, strong, readonly) NSDate *releaseDate;
 
 @property (nonatomic, strong, readonly) NSArray	*spokenLanguages;
