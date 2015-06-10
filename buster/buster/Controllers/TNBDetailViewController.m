@@ -13,13 +13,18 @@
 #import "TNBExtendedMovieItem.h"
 
 #import "TNBNetworkManager.h"
+#import "UIImage+Alpha.h"
 
 @interface TNBDetailViewController() <iCarouselDataSource, iCarouselDelegate, TNBSearchDetailCellDelegate>
 
 @property (nonatomic, strong) TNBSearchModel *searchModel;
 @property (nonatomic, assign) NSUInteger currentIndex;
-
 @property (nonatomic, strong) iCarousel *carouselView;
+
+@property (nonatomic, strong) UIImageView *backgroundImageView;
+
+@property (nonatomic, strong) UIButton *backButton;
+
 @end
 
 @implementation TNBDetailViewController
@@ -37,6 +42,8 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+
+	[self.view addSubview:self.backgroundImageView];
 	[self.view addSubview:self.carouselView];
 	self.view.backgroundColor = [UIColor whiteColor];
 	[self.searchModel addObserver: self
@@ -46,6 +53,28 @@
 
 	[self.carouselView scrollToItemAtIndex:self.currentIndex animated:NO];
 
+
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
+}
+
+
+// right now it is the simpliest way to handle the custom push animation
+// if there would be another VC to push on the stack
+// the UINavigationControllerDelegate should be implemented
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[UIView animateWithDuration:1.0f animations:^{
+		CGRect frame = CGRectOffset(self.carouselView.frame, 0.0f, - self.carouselView.frame.size.height);
+		self.carouselView.frame = frame;
+
+		self.backgroundImageView.alpha = 0.2f;
+	} completion:^(BOOL finished) {
+		for (id obj in self.carouselView.visibleItemViews) {
+			TNBSearchDetailCell *cell = DYNAMIC_CAST(obj, TNBSearchDetailCell);
+			[cell recalculateTransformLimits];
+		}
+	}];
 }
 
 - (void)dealloc {
@@ -54,9 +83,18 @@
 
 #pragma mark - lazy getters
 
+- (UIImageView *)backgroundImageView {
+	if (!_backgroundImageView) {
+		_backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+		_backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+		_backgroundImageView.image = self.previousScreenShot;
+	}
+	return _backgroundImageView;
+}
+
 - (iCarousel *)carouselView {
 	if (!_carouselView) {
-		CGRect frame = CGRectOffset(self.view.bounds, 0.0f, 64.0f + 20.0f);
+		CGRect frame = CGRectOffset(self.view.bounds, 0.0f, self.view.bounds.size.height + 64.0f + 20.0f);
 		_carouselView = [[iCarousel alloc] initWithFrame:frame];
 		_carouselView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
@@ -74,6 +112,46 @@
 	return _carouselView;
 }
 
+- (UIButton *)backButton {
+	if (!_backButton) {
+		_backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_backButton.frame = CGRectMake(0, 0, 44.0f, 44.0f);
+		UIImage *backMask = [[UIImage imageNamed:@"icon_navbarBack"] imageWithTintColor:[UIColor blackColor]];
+		[_backButton setImage: [backMask imageWithTintColor:[ UIColor blackColor]]
+					 forState: UIControlStateNormal];
+
+		[_backButton setImage: [backMask imageWithTintColor:[ UIColor darkGrayColor]]
+					 forState: UIControlStateHighlighted | UIControlStateSelected];
+
+
+		[_backButton addTarget:self action:@selector(backButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+	}
+
+	return _backButton;
+}
+
+- (void)backButtonPressed {
+	__block TNBDetailViewController *blockSelf = self;
+	[UIView animateWithDuration:1.0f animations:^{
+		CGRect frame = CGRectOffset(self.carouselView.frame, 0.0f, self.carouselView.frame.size.height);
+		self.carouselView.frame = frame;
+
+		self.backgroundImageView.alpha = 1.0f;
+	}
+	 completion:^(BOOL finished) {
+		 [blockSelf.navigationController popViewControllerAnimated:NO];
+	 }];
+
+}
+
+#pragma mark - custom setters
+- (void)setPreviousScreenShot:(UIImage *)previousScreenShot {
+	if (_previousScreenShot != previousScreenShot) {
+		_previousScreenShot = previousScreenShot;
+		//shouldn't call the ivar's lazy loader, because it will trigger a view load
+		_backgroundImageView.image = previousScreenShot;
+	}
+}
 
 #pragma mark - iCarouselDataSource
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {

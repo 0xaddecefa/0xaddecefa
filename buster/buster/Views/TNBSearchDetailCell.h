@@ -25,7 +25,6 @@
 
 - (void)setMovieItem:(TNBBaseMovieItem *)item;
 
-
-
+- (void)recalculateTransformLimits;
 
 @end

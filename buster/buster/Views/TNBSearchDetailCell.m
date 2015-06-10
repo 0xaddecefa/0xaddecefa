@@ -10,6 +10,7 @@
 
 #import "TNBImageManager.h"
 #import "UIImageView+WebCache.h"
+#import "UIImage+Alpha.h"
 #import "FXBlurView.h"
 #import "TNBStaticRatingView.h"
 #import "NSAttributedString+Header.h"
@@ -75,19 +76,23 @@ static const CGFloat kMaxRadii = 10.0f;
 
 - (void)setMovieItem:(TNBBaseMovieItem *)item {
 
-	NSString *coverURLString = [[TNBImageManager sharedInstance] urlStringForResource:item.posterPath type:EImageTypePoster width:IS_DEVICE_IPAD ? 180.0f : 120.0f];
+	CGFloat coverWidth = IS_DEVICE_IPAD ? 180.0f : 120.0f;
+	NSString *coverURLString = [[TNBImageManager sharedInstance] urlStringForResource: item.posterPath
+																				 type: EImageTypePoster
+																				width: coverWidth];
 	NSURL *coverUrl = [NSURL URLWithString:coverURLString];
 	if (coverUrl) {
 
 		__block TNBSearchDetailCell *blockSelf = self;
 		[self.coverImageView sd_setImageWithURL: coverUrl
+							   placeholderImage: [UIImage imageWithColor:[UIColor grayColor] andSize:CGSizeMake(coverWidth, 1.5f * coverWidth)]
 									  completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
 										  if (image && !error) {
 											  [blockSelf setNeedsLayout];
 										  }
 									  }];
 	} else {
-		self.coverImageView.image = nil;
+		self.coverImageView.image = [UIImage imageWithColor:[UIColor grayColor] andSize:CGSizeMake(coverWidth, 1.5f * coverWidth)];
 	}
 
 	NSString *backgroundURLString = [[TNBImageManager sharedInstance] urlStringForResource:item.backdropPath type:EImageTypePoster width:self.bounds.size.width];
@@ -96,16 +101,17 @@ static const CGFloat kMaxRadii = 10.0f;
 
 		__block TNBSearchDetailCell *blockSelf = self;
 		[self.backgroundImageView sd_setImageWithURL: backgroundURL
-									  completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-										  if (image && !error) {
-											  UIImage *blurredImage = [image blurredImageWithRadius:10.0f
-																						 iterations:16 tintColor:[UIColor redColor]];
-											  blockSelf.backgroundImageView.image = blurredImage;
-											  [blockSelf setNeedsLayout];
-										  }
-									  }];
+									placeholderImage: [UIImage imageWithColor:[UIColor darkGrayColor] andSize:CGSizeZero]
+										   completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+											   if (image && !error) {
+												   UIImage *blurredImage = [image blurredImageWithRadius:10.0f
+																							  iterations:16 tintColor:[UIColor redColor]];
+												   blockSelf.backgroundImageView.image = blurredImage;
+												   [blockSelf setNeedsLayout];
+											   }
+										   }];
 	} else {
-		self.backgroundImageView.image = nil;
+		self.backgroundImageView.image = [UIImage imageWithColor:[UIColor darkGrayColor] andSize:CGSizeZero];
 	}
 
 
@@ -268,6 +274,8 @@ static const CGFloat kMaxRadii = 10.0f;
 - (UIImageView *)coverImageView {
 	if (!_coverImageView) {
 		_coverImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+		_coverImageView.layer.borderColor = self.contentView.backgroundColor.CGColor;
+		_coverImageView.layer.borderWidth = 4.0f;
 	}
 	return _coverImageView;
 }

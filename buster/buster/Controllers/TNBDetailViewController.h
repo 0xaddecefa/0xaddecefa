@@ -15,4 +15,6 @@
 - (instancetype)initWithViewModel: (TNBSearchModel *)model
 					 initialIndex: (NSUInteger)index;
 
+@property (nonatomic, strong) UIImage *previousScreenShot;
+
 @end

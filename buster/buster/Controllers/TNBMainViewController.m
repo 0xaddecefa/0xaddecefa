@@ -258,7 +258,9 @@
 	__block TNBMainViewController *blockSelf = self;
 	myCell.defaultActionCallback = ^() {
 		TNBDetailViewController *vc = [[TNBDetailViewController alloc] initWithViewModel:self.searchModel initialIndex:indexPath.row];
-		[blockSelf.navigationController pushViewController:vc animated:YES];
+		vc.previousScreenShot = [self saveBackgroundImage];
+
+		[blockSelf.navigationController pushViewController:vc animated:NO];
 	};
 
 	return cell;
@@ -380,6 +382,23 @@
 	}
 }
 
+#pragma mark transition helper
+-(UIImage *) saveBackgroundImage
+{
+
+	CGRect screenRect = [UIScreen mainScreen].applicationFrame;
+	screenRect.origin.x = 0.0;
+	screenRect.origin.y = 0.0;
+	//we need to add an extra 20px because of the status bar
+	screenRect.size.height +=20.f;
+
+	UIGraphicsBeginImageContextWithOptions( screenRect.size, YES, 0.0f );
+	[self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return newImage;
+}
 
 
 @end

@@ -8,5 +8,8 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (Alpha)
+
 - (UIImage *)imageWithTintColor:(UIColor *)tintColor;
++ (UIImage *)imageWithColor: (UIColor *)color andSize:(CGSize)size;
+
 @end
