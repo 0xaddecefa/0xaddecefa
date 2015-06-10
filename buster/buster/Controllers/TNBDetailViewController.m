@@ -14,6 +14,7 @@
 
 #import "TNBNetworkManager.h"
 #import "UIImage+Alpha.h"
+#import "UIView+Paralax.h"
 
 @interface TNBDetailViewController() <iCarouselDataSource, iCarouselDelegate, TNBSearchDetailCellDelegate>
 
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
 @property (nonatomic, strong) UIButton *backButton;
+
+@property (nonatomic, assign)  BOOL statusBarHidden;
 
 @end
 
@@ -64,8 +67,13 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[UIView animateWithDuration:1.0f animations:^{
-		CGRect frame = CGRectOffset(self.carouselView.frame, 0.0f, - self.carouselView.frame.size.height);
+	[UIView animateWithDuration:1.0f
+						  delay:0.0f
+		 usingSpringWithDamping: 0.7f
+		  initialSpringVelocity: 1.0f
+						options:0
+					 animations:^{
+		CGRect frame = CGRectOffset(self.carouselView.frame, 0.0f, - self.view.bounds.size.height);
 		self.carouselView.frame = frame;
 
 		self.backgroundImageView.alpha = 0.2f;
@@ -81,6 +89,11 @@
 	[self.searchModel removeObserver:self forKeyPath:@"currentState"];
 }
 
+- (BOOL)prefersStatusBarHidden {
+	return self.statusBarHidden;
+}
+
+
 #pragma mark - lazy getters
 
 - (UIImageView *)backgroundImageView {
@@ -88,13 +101,17 @@
 		_backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 		_backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 		_backgroundImageView.image = self.previousScreenShot;
+		_backgroundImageView.parallaxIntensity = 100.0f;
 	}
 	return _backgroundImageView;
 }
 
 - (iCarousel *)carouselView {
 	if (!_carouselView) {
-		CGRect frame = CGRectOffset(self.view.bounds, 0.0f, self.view.bounds.size.height + 64.0f + 20.0f);
+		CGRect frame = self.view.bounds;
+		frame.origin.y += self.view.bounds.size.height + 64.0f + 20.0f;
+		frame.size.height = self.view.bounds.size.height - (64.0f + 20.0f);
+
 		_carouselView = [[iCarousel alloc] initWithFrame:frame];
 		_carouselView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
@@ -103,7 +120,6 @@
 
 		_carouselView.type = iCarouselTypeLinear;
 		_carouselView.centerItemWhenSelected = YES;
-
 		_carouselView.backgroundColor = [UIColor clearColor];
 
 	}
@@ -133,7 +149,7 @@
 - (void)backButtonPressed {
 	__block TNBDetailViewController *blockSelf = self;
 	[UIView animateWithDuration:1.0f animations:^{
-		CGRect frame = CGRectOffset(self.carouselView.frame, 0.0f, self.carouselView.frame.size.height);
+		CGRect frame = CGRectOffset(self.carouselView.frame, 0.0f, self.view.bounds.size.height);
 		self.carouselView.frame = frame;
 
 		self.backgroundImageView.alpha = 1.0f;
@@ -153,16 +169,35 @@
 	}
 }
 
+- (void)setStatusBarHidden:(BOOL)statusBarHidden {
+	if (_statusBarHidden != statusBarHidden) {
+		_statusBarHidden = statusBarHidden;
+		[self setNeedsStatusBarAppearanceUpdate];
+	}
+}
+
 #pragma mark - iCarouselDataSource
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
 	return self.searchModel.movies.count + (self.searchModel.currentState != EModelStateHasAllContent ? 1 : 0);
 }
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
 	if (!view) {
-		CGFloat edge = IS_DEVICE_IPAD ? 100.0f : 50.0f;
-		CGRect frame = UIEdgeInsetsInsetRect(self.carouselView.bounds, UIEdgeInsetsMake(0.0f, edge, 0.0f, edge));
+		CGFloat scale = self.carouselView.bounds.size.height / self.view.bounds.size.height;
+		CGFloat edge = self.view.bounds.size.width * (1 - scale) / 2.0f;
+		CGRect frame = CGRectMake(edge,
+								  self.view.bounds.size.height * (1-scale) / 2.0f,
+								  self.view.bounds.size.width * scale,
+								  self.view.bounds.size.height * scale);
+
+
+		//UIEdgeInsetsInsetRect(self.carouselView.bounds, UIEdgeInsetsMake(0.0f, edge, 0.0f, edge));
 		view = [[TNBSearchDetailCell alloc] initWithFrame:frame];
 		view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
+		view.layer.shadowColor = [UIColor blackColor].CGColor;
+		view.layer.shadowRadius = 10.0f;
+		view.layer.shadowOpacity = 1.0f;
+
 		TNBSearchDetailCell *myCell = DYNAMIC_CAST(view, TNBSearchDetailCell);
 		myCell.delegate = self;
 	}
@@ -205,7 +240,7 @@
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
 	switch (option) {
 		case iCarouselOptionSpacing:
-			return IS_DEVICE_IPAD ? 1.05f : 1.1f;
+			return IS_DEVICE_IPAD ? 1.005f : 1.01f;
 		default:
 			return value;
 	}
@@ -216,7 +251,11 @@
 - (void)cell: (TNBSearchDetailCell *) cell becameFullScreen:(BOOL)fullscreen {
 	self.carouselView.scrollEnabled = !fullscreen;
 
-	[self.navigationController setNavigationBarHidden:fullscreen animated:NO];
+	[UIView animateWithDuration:0.5f animations:^{
+		[self.navigationController setNavigationBarHidden:fullscreen animated:NO];
+		self.statusBarHidden = fullscreen;
+	}];
+
 }
 
 #pragma mark - KVO
@@ -233,5 +272,6 @@
 		}
 	}
 }
+
 
 @end

@@ -430,9 +430,10 @@ static const CGFloat kMaxRadii = 10.0f;
 }
 
 - (void)recalculateTransformLimits {
-	self.maxScale = ([UIScreen mainScreen].bounds.size.width / self.bounds.size.width) - 1.0f;
+	self.maxScale = ([UIScreen mainScreen].bounds.size.width / self.bounds.size.width) - 0.98f;
 	CGFloat originalCenter = [self convertPoint:self.center toView:[UIApplication sharedApplication].keyWindow].y;
 	CGFloat offset = originalCenter - ([UIScreen mainScreen].bounds.size.height / 2.0f);
+	offset -=77.0f;
 	self.maxOffset =  offset;
 
 }
