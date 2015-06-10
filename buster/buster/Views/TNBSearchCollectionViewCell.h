@@ -23,5 +23,5 @@ typedef void(^ActionCallback)(void);
 					andTitle: (NSString *)title;
 
 - (void)showContent;
-
+- (void)hideContent: (BOOL)animated;
 @end

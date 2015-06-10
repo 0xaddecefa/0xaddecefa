@@ -22,7 +22,6 @@
 @property (nonatomic, strong) TNBSearchModel *searchModel;
 
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) NSDate *searchBarLastSearch;
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -201,14 +200,6 @@
 	}
 	return _initialView;
 }
-
-- (NSDate *)searchBarLastSearch {
-	if (!_searchBarLastSearch) {
-		_searchBarLastSearch = [NSDate dateWithTimeIntervalSince1970:0.0f];
-	}
-	return _searchBarLastSearch;
-}
-
 
 #pragma mark - custom setters
 - (void)setSearchModel:(TNBSearchModel *)searchModel {
@@ -399,6 +390,11 @@
 #pragma mark transition helper
 -(UIImage *) saveBackgroundImage
 {
+
+	for (id obj in self.collectionView.visibleCells) {
+		TNBSearchCollectionViewCell *cell = DYNAMIC_CAST(obj, TNBSearchCollectionViewCell);
+		[cell hideContent:NO];
+	}
 
 	CGRect screenRect = [UIScreen mainScreen].applicationFrame;
 	screenRect.origin.x = 0.0;

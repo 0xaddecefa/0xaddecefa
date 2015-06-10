@@ -213,8 +213,12 @@
 }
 
 - (void)hideContent {
+	[self hideContent:YES];
+}
+
+- (void)hideContent:(BOOL)animated {
 	__block TNBSearchCollectionViewCell *blockSelf = self;
-	[UIView animateWithDuration:0.5f
+	[UIView animateWithDuration:animated ? 0.5f : 0.0f
 					 animations:^{
 						 if (blockSelf.backgroundImageView.image) {
 							 blockSelf.containerView.alpha = 0.0f;
