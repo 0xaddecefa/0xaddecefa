@@ -12,11 +12,9 @@
 @interface TNBExtendedMovieItem()
 
 @property (nonatomic, strong, readwrite) NSString *tagline;
-@property (nonatomic, strong, readwrite) NSString *originalTitle;
-@property (nonatomic, strong, readwrite) NSNumber *voteAverage;
 @property (nonatomic, strong, readwrite) NSDate	*releaseDate;
 
-@property (nonatomic, strong, readwrite) NSArray	*spokenLanguages;
+@property (nonatomic, strong, readwrite) NSArray *spokenLanguages;
 @property (nonatomic, strong, readwrite) NSArray *productionCountries;
 @property (nonatomic, strong, readwrite) NSArray *productionCompanies;
 @property (nonatomic, strong, readwrite) NSArray *genres;
@@ -30,10 +28,6 @@
 	if (self) {
 
 		self.tagline = DYNAMIC_CAST(dictionary[@"tagline"], NSString);
-
-		self.originalTitle = DYNAMIC_CAST(dictionary[@"original_title"], NSString);
-
-		self.voteAverage = DYNAMIC_CAST(dictionary[@"vote_average"], NSNumber);
 
 		NSString *releaseDateStr = DYNAMIC_CAST(dictionary[@"release_date"], NSString);
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
